@@ -16,12 +16,13 @@ class ShapeTest extends PHPUnit_Framework_TestCase
     public function testArea()
     {
         // first assertion
-        $rect = new Rect(12, 3);
-        $result = $rect-> area();
+        $lame = new Shape('Rect', 12, 3);
+        var_dump($lame);
+        $result =  $lame -> area();
         $this->assertEquals(36, $result);
-        //second assertion
-        $circ = new Circ(3);
-        $result = $circ-> area();
+        // //second assertion
+        $circ = new Shape('Circ', 3, -1);
+        $result = $circ -> area();
         $this->assertEquals(28.26, $result);
     }
 }

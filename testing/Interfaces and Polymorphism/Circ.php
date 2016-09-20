@@ -2,7 +2,7 @@
 /**
  * is a subclass of Shape
  */
-class Circ implements Shape
+class Circ extends Shape
 {
     private $radius;
     /**
@@ -10,7 +10,7 @@ class Circ implements Shape
      * @method __construct
      * @param  [int]      $r [radius of circle]
      */
-    public function __construct($r)
+    public function __construct($r, $waste)
     {
         $this -> radius = $r;
     }

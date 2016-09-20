@@ -2,7 +2,7 @@
 /**
  * Rect class is subclass of Shape
  */
-class Rect implements Shape
+class Rect extends Shape
 {
     private $length;
     private $width;
@@ -12,6 +12,7 @@ class Rect implements Shape
      * @param  [int]      $l [length of rectangle]
      * @param  [type]      $w [length of rectangle]
      */
+
     public function __construct($l, $w)
     {
         $this -> length = $l;
@@ -25,5 +26,6 @@ class Rect implements Shape
     public function area()
     {
         return $this -> length * $this -> width;
+        // return $this -> length * $this -> width;
     }
 }
