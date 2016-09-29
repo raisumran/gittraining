@@ -26,6 +26,6 @@ class Dashboard extends Controller
             header('location: login/logIn');
             exit;
         }
-        echo "dashboard reached";
+        $this -> view('dashboard/index', []);
     }
 }

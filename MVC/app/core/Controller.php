@@ -15,7 +15,7 @@ class Controller
     {
         // echo $model;
         set_include_path(dirname(__FILE__)."/../");
-        require_once ('../app/models/' .$model. '.php');
+        // require_once ('../app/models/' .$model. '.php');
         return new $model();
     }
     /**

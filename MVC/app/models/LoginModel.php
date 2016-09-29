@@ -28,7 +28,7 @@ class LoginModel extends Model
             AND `password` LIKE '$password'
             LIMIT 0 , 30"
         );
-        require_once("../app/controllers/dashboard.php");
+        // require_once("../app/controllers/dashboard.php");
         if ($data != null) {
             echo "yahan hmesha aata hai";
             Session::init();
