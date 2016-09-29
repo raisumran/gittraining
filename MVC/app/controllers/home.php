@@ -1,12 +1,11 @@
 <?php
+/**
+ * This class is the controller class for the default view and landing page
+ */
 class Home extends Controller
 {
-    public function index($name = '') {
-        $user = $this -> model('User');
-        // $user -> name = $name;
-        echo $user -> name;
-        // name => $user-> name
+    public function index()
+    {
         $this -> view('home/index', []);
     }
 }
-?>

@@ -1,13 +1,27 @@
 <?php
-class Dashboard extends Controller {
-    public function __contruct() {
+/**
+ * THis class is the Controller class for the menu page
+ * This class confirms that you are logged in and then directs you to
+ * ... view/dashboard/index.php
+ */
+
+
+class Dashboard extends Controller
+{
+    public function contruct()
+    {
 
     }
-    public function index() {
+    /**
+     * [Confirms you are logged in and directs you to view/dashboard/index]
+     * @method index
+     */
+
+    public function index()
+    {
         Session::init();
         $logged = Session::get('loggedIn');
-        echo $logged;
-        if($logged == false) {
+        if ($logged == false) {
             Session::destroy();
             header('location: login/logIn');
             exit;
@@ -15,4 +29,3 @@ class Dashboard extends Controller {
         echo "dashboard reached";
     }
 }
-?>
