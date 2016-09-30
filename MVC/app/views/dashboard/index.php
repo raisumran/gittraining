@@ -4,5 +4,6 @@
     <!-- <script>$(function() { alert('hello') })</script> -->
 </head>
 <body>
-    <a href = 'http://localhost/PHP/MVC/public/students/index'>Students</a>
+    <?php $link = LINKPATH . 'students/index'; ?>
+    <a href = "<?php print $link; ?>" > Students</a>
 </body>

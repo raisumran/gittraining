@@ -10,5 +10,6 @@
         div.textContent = "Welcome ..! click login to continue...!";
         var text = div.textContent;
     </script>
-    <a href = 'http://localhost/PHP/MVC/public/login/logIn'>Login</a>
+    <?php $link = LINKPATH . 'login/logIn'; ?>
+    <a href = "<?php print $link; ?>" > Login</a>
 </body>

@@ -8,9 +8,10 @@ class Students extends Controller
 
     function __construct()
     {
-        
+
     }
     public function index() {
+        $this -> view('students/index', []);
     }
     public function create()
     {
