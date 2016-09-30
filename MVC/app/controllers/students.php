@@ -4,14 +4,13 @@
  */
 class Students extends Controller
 {
-    
+
 
     function __construct()
     {
-        # code...
+        
     }
     public function index() {
-        echo "sumran";
     }
     public function create()
     {
