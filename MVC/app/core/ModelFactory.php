@@ -9,6 +9,11 @@ class ModelFactory
     {
         # code...
     }
+    function createModel($model) {
+        return new $model();
+
+    }
+
 }
 
 ?>

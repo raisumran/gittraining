@@ -13,10 +13,10 @@ class Controller
      */
     public function model($model)
     {
-        // echo $model;
         set_include_path(dirname(__FILE__)."/../");
-        // require_once ('../app/models/' .$model. '.php');
-        return new $model();
+        $mF =  new ModelFactory();
+        $ret = $mF -> createModel($model);
+        return $ret;
     }
     /**
      * [view description]

@@ -15,7 +15,7 @@ class StudentsModel extends Model
         $email = $_POST["email"];
         echo $name;
         $array = $numbersArray = array($name, $city, $email);
-        $dbQuery =  new DBquery($this -> table,'CREATE');
+        $dbQuery =  new DBquery($this -> table);
         $query =  $dbQuery -> create($array);
         $this -> db ->returnQueryData($query, False);
         // require_once("../app/controllers/dashboard.php");

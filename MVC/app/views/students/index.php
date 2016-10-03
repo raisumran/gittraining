@@ -24,5 +24,5 @@
 <label>name</label><input type ="text" name = "name"/><br />
 <label>city</label> <input type = "text" name = "city"/><br />
 <label>email</label> <input type = "text" name = "email"/><br />
-<label></label><input type = "submit"/>
+<label></label><input type = "submit" value =  "create"/>
 </form>

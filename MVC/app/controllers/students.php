@@ -13,20 +13,18 @@ class Students extends Controller
     public function index() {
         $user = $this -> model('StudentsModel');
         $user -> table = 'student';
-        echo $user -> table;
         $this -> view('students/index', []);
     }
     public function create()
     {
         $user = $this -> model('StudentsModel');
-        $user -> table = 'student';
+        $user -> table = 'students';
+        $user -> column =  3;
         $user -> create();
         // $this -> view('students/create', []);
-
     }
     public function read()
     {
-
     }
     public function update()
     {
