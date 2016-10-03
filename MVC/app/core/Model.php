@@ -4,6 +4,9 @@
 */
 class Model
 {
+    protected $tableName;
+    protected $columns;
+
     // public $db
     /**
      * [creates a new DB object when invoked]

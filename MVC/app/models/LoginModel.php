@@ -20,13 +20,14 @@ class LoginModel extends Model
      */
     public function run()
     {
+        echo "waaaaao";
         $login = $_POST["login"];
         $password = $_POST["password"];
         $data = $this -> db ->returnQueryData(
             "SELECT * FROM `users`
             WHERE `login` LIKE '$login'
             AND `password` LIKE '$password'
-            LIMIT 0 , 30"
+            LIMIT 0 , 30", True
         );
         // require_once("../app/controllers/dashboard.php");
         if ($data != null) {
