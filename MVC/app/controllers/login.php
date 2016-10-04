@@ -24,9 +24,6 @@ class Login extends Controller
     public function run()
     {
         $user = $this -> model('LoginModel');
-        $user -> table = 'students';
-        echo $user -> Table;
-        echo " aa gaya hai";
         $user -> run();
         // $this -> view('login/index', []);
     }

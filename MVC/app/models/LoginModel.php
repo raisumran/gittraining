@@ -21,9 +21,10 @@ class LoginModel extends Model
     public function run()
     {
         echo "waaaaao";
-        $login = $_POST["login"];
-        $password = $_POST["password"];
-        $data = $this -> db ->returnQueryData(
+        $login = Request::getInstance() -> params[0];
+        $password = Request::getInstance() -> params[1];
+        $dbQuery = new DBquery('login');
+        $data = $dbQuery -> returnQueryData(
             "SELECT * FROM `users`
             WHERE `login` LIKE '$login'
             AND `password` LIKE '$password'
@@ -31,7 +32,7 @@ class LoginModel extends Model
         );
         // require_once("../app/controllers/dashboard.php");
         if ($data != null) {
-            echo "yahan hmesha aata hai";
+            // echo "yahan hmesha aata hai";
             Session::init();
             Session::set('loggedIn', true);
             header('location: ../dashboard');

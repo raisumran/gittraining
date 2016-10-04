@@ -4,15 +4,15 @@
 */
 class Model
 {
-    protected $tableName;
-    protected $columns;
+
+    protected $db;
     // public $db
     /**
      * [creates a new DB object when invoked]
      * @method __construct
-     */
+    */
     public function __construct()
     {
-        $this -> db =  new Database();
+        $this->db = Database::getInstance();
     }
 }

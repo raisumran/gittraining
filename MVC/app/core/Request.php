@@ -4,7 +4,17 @@
  */
 class Request
 {
+    private static $_instance = null;
+    public $controller;
+    public $method;
+    public $params;
 
+    public static function getInstance() {
+        if (Request::$_instance == null) {
+            Request::$_instance = new Request();
+        }
+        return Request::$_instance;
+    }
     function __construct()
     {
         $controller = 'home';
@@ -22,8 +32,12 @@ class Request
             }
             $params = $url ? array_values($url) : [];
         }
-        $app = new App($controller, $method, $params);
-        $app -> controllerCall();
+        $this -> controller = $controller;
+        $this -> method =  $method;
+        $this -> params =  $params;
+        if($_POST) {
+            $this -> params =  $_POST["param"];
+        }
     }
     /**
      * [returns the the contoller, method and params as an array]

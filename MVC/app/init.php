@@ -1,6 +1,6 @@
 <?php
 spl_autoload_register(function($class_name){
-    // echo SAM;
+    // echo $class_name. "<br>";
     $file = 'core/' . $class_name . '.php';
     if (file_exists(ABSPATH . 'app/' . $file))  {
         include ( $file);

@@ -21,8 +21,8 @@
 <?php $link = LINKPATH . 'students/create'; ?>
 <h1> Login</h1>
 <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
-<label>name</label><input type ="text" name = "name"/><br />
-<label>city</label> <input type = "text" name = "city"/><br />
-<label>email</label> <input type = "text" name = "email"/><br />
+<label>name</label><input type ="text" name = "param[]"/><br />
+<label>city</label> <input type = "text" name = "param[]"/><br />
+<label>email</label> <input type = "text" name = "param[]"/><br />
 <label></label><input type = "submit" value =  "create"/>
 </form>

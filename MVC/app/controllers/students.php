@@ -11,8 +11,6 @@ class Students extends Controller
 
     }
     public function index() {
-        $user = $this -> model('StudentsModel');
-        $user -> table = 'student';
         $this -> view('students/index', []);
     }
     public function create()
