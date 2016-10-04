@@ -18,8 +18,39 @@ class DBquery
         }
         $query = rtrim($query, ",");
         $query = $query . ')';
+        return $query;
+    }
+    function viewAll() {
+        $query = 'SELECT * FROM '  . $this -> table ;
+        return $query;
+    }
+    function delete($arr) {
+        $query = 'DELETE FROM '  . $this -> table ;
+        $query =  $query. ' WHERE id = ' . $arr[0] ;
+        echo $query;
+        return $query;
+    }
+    function update($arr, $columnArray) {
+        $query = 'UPDATE '  . $this -> table .' SET ';
+        for($i = 0; $i < count($columnArray); $i++) {
+            $query =  $query . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
+        }
+        $query = rtrim($query, ",");
+        $query =  $query. 'WHERE '. 'id = '. $arr[0];
         // echo $query;
         return $query;
+    }
+    function read($arr, $columnArray) {
+        $query = 'SELECT ' ;
+        foreach ($columnArray as &$value) {
+            $query =  $query . $value .",";
+        }
+        $query = rtrim($query, ",");
+        $query =  $query .' FROM '.  $this -> table;
+        $query =  $query . ' WHERE id = ' . $arr[0];
+        // echo $query . "<br>";
+        return $query;
+
     }
     /**
     * [runs the query on database]
@@ -40,6 +71,9 @@ class DBquery
                 }
             } catch (\PDOException $e) {
                 echo $e;
+            }
+            foreach ($table_data_array as & $value) {
+                echo implode(" ",$value) . "<br>";
             }
             return $table_data_array;
         } else {

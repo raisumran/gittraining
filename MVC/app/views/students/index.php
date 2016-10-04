@@ -1,28 +1,37 @@
-<!-- <html>
-<head>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <!-- <script>$(function() { alert('hello') })</script> -->
-</head>
-<body>
-    <!-- <?php $link = LINKPATH . 'students/create'; ?>
-    <a href = "<?php print $link; ?>" > Create</a> -->
-    <?php $link = LINKPATH . 'students/update'; ?>
-    <a href = "<?php print $link; ?>" > Update</a>
-    <?php $link = LINKPATH . 'students/read'; ?>
-    <a href = "<?php print $link; ?>" > Read</a>
-    <?php $link = LINKPATH . 'students/delete'; ?>
-    <a href = "<?php print $link; ?>" > Delete</a>
-    <!-- <a href = 'http://localhost/PHP/MVC/public/students/create'>Create</a>
-    <a href = 'http://localhost/PHP/MVC/public/students/update'>Update</a>
-    <a href = 'http://localhost/PHP/MVC/public/students/create'>Delete</a>
-    <a href = 'http://localhost/PHP/MVC/public/students/read'>Read</a> -->
-</body> -->
 <html>
-<?php $link = LINKPATH . 'students/create'; ?>
-<h1> Login</h1>
-<form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
-<label>name</label><input type ="text" name = "param[]"/><br />
-<label>city</label> <input type = "text" name = "param[]"/><br />
-<label>email</label> <input type = "text" name = "param[]"/><br />
-<label></label><input type = "submit" value =  "create"/>
-</form>
+<body>
+    <?php $link = LINKPATH . 'students/create'; ?>
+    <h1> Create </h1>
+    <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
+    <label>name</label><input type ="text" name = "param[]"/><br />
+    <label>city</label> <input type = "text" name = "param[]"/><br />
+    <label>email</label> <input type = "text" name = "param[]"/><br />
+    <label></label><input type = "submit" value =  "create"/>
+    </form>
+
+    <?php $link = LINKPATH . 'students/delete'; ?>
+    <?php print $link; ?>
+    <h1> Delete </h1>
+    <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
+    <label>ID</label><input type ="text" name = "param[]"/><br />
+    <label></label><input type = "submit" value =  "Delete"/>
+    </form>
+
+    <?php $link = LINKPATH . 'students/update'; ?>
+    <h1> update </h1>
+    <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
+    <label>ID</label><input type ="text" name = "param[]"/><br />
+    <label>name</label><input type ="text" name = "param[]"/><br />
+    <label>city</label> <input type = "text" name = "param[]"/><br />
+    <label>email</label> <input type = "text" name = "param[]"/><br />
+    <label></label><input type = "submit" value =  "update"/>
+    </form>
+
+    <?php $link = LINKPATH . 'students/read'; ?>
+    <h1> Read </h1>
+    <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
+    <label>ID</label><input type ="text" name = "param[]"/><br />
+    <label></label><input type = "submit" value =  "Read"/>
+    </form>
+</body>
+</html>

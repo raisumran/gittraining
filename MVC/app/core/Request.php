@@ -32,6 +32,7 @@ class Request
             }
             $params = $url ? array_values($url) : [];
         }
+        echo $method;
         $this -> controller = $controller;
         $this -> method =  $method;
         $this -> params =  $params;
