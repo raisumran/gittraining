@@ -22,8 +22,11 @@ class App
     public function controllerCall() {
         $cFactory =  new ControllerFactory();
         $cHandle = $cFactory ->  createController(Request::getInstance() -> controller);
-        $method =  Request::getInstance() -> method;
-        $cHandle -> $method();
+        $controller = Request::getInstance() -> controller;
+        if($controller ==  'login'|| $controller ==  'home' || $controller == 'dashboard') {
+            $method =  Request::getInstance() -> method;
+            $cHandle -> $method();
+        }
     }
 
 }

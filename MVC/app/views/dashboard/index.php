@@ -6,4 +6,6 @@
 <body>
     <?php $link = LINKPATH . 'students/index'; ?>
     <a href = "<?php print $link; ?>" > Students</a>
+    <?php $link = LINKPATH . 'teachers/index'; ?>
+    <a href = "<?php print $link; ?>" > Teachers</a>
 </body>

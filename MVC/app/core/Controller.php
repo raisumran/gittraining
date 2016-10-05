@@ -5,6 +5,13 @@
  */
 class Controller
 {
+    public $columnArray;
+    protected $controller;
+    public $model;
+    public function __construct() {
+        $this -> controller = Request::getInstance() -> controller;
+        // $this -> controller = $controller;
+    }
     /**
      * [creates model object]
      * @method model
@@ -27,6 +34,33 @@ class Controller
     public function view($view, $data = []) {
         set_include_path(dirname(__FILE__)."/../");
         require_once ('../app/views/'. $view. '.php');
+    }
+    public function index() {
+        $user = $this -> model($this -> model);
+        $user -> dbCall($this ->  columnArray, True);
+        $this -> view($this -> controller . '/index', []);
+    }
+    public function create()
+    {
+        $user = $this -> model($this -> model);
+        $user -> dbCall($this ->  columnArray, False);
+        // $this -> view('students/create', []);
+    }
+    public function read()
+    {
+        $user = $this -> model($this -> model);
+        $user -> dbCall($this ->  columnArray, True);
+    }
+    public function update()
+    {
+        $user = $this -> model($this -> model);
+        $user -> dbCall($this ->  columnArray, False);
+    }
+    public function delete()
+    {
+        $user = $this -> model($this -> model);
+        $user -> dbCall($this ->  columnArray, False);
+
     }
 }
 ?>

@@ -19,13 +19,13 @@ class Dashboard extends Controller
 
     public function index()
     {
-        Session::init();
-        $logged = Session::get('loggedIn');
-        if ($logged == false) {
-            Session::destroy();
-            header('location: login/logIn');
-            exit;
-        }
+        // Session::init();
+        // $logged = Session::get('loggedIn');
+        // if ($logged == false) {
+        //     Session::destroy();
+        //     header('location: login/logIn');
+        //     exit;
+        // }
         $this -> view('dashboard/index', []);
     }
 }

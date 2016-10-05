@@ -7,14 +7,11 @@ class Teachers extends Controller
 
     function __construct()
     {
-        # code...
+        $this ->  columnArray = array ('id', 'name', 'city', 'email');
+        $this ->  model = 'TeachersModel';
+        parent::__construct();
+        $method =  Request::getInstance() -> method;
+        parent::$method();
     }
-    public function index() {
 
-    }
-    public function create() {
-        
-    }
 }
-
-?>
