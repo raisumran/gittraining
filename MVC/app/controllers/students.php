@@ -11,29 +11,29 @@ class Students extends Controller
     }
     public function index() {
         $user = $this -> model('StudentsModel');
-        $user -> viewAll();
+        $user -> dbCall($this ->  columnArray, True);
         $this -> view('students/index', []);
     }
     public function create()
     {
         $user = $this -> model('StudentsModel');
-        $user -> create();
+        $user -> dbCall($this ->  columnArray, False);
         // $this -> view('students/create', []);
     }
     public function read()
     {
         $user = $this -> model('StudentsModel');
-        $user -> read($this ->  columnArray);
+        $user -> dbCall($this ->  columnArray, True);
     }
     public function update()
     {
         $user = $this -> model('StudentsModel');
-        $user -> update($this ->  columnArray);
+        $user -> dbCall($this ->  columnArray, False);
     }
     public function delete()
     {
         $user = $this -> model('StudentsModel');
-        $user -> delete();
+        $user -> dbCall($this ->  columnArray, False);
 
     }
 }

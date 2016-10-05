@@ -9,7 +9,7 @@ class DBquery
     {
         $this ->  table = $table;
     }
-    function create($arr)
+    function create($arr, $columnArray)
     {
         // $query = 'INSERT INTO '. $this -> table .'(name,'.'city,'.'email)'. ' VALUES ('. "'". $arr[0] ."'".','. "'".$arr[1] ."'". ','. "'".$arr[2] ."'". ')';
         $query = 'INSERT INTO '. $this -> table . ' VALUES (NULL, ';
@@ -20,11 +20,11 @@ class DBquery
         $query = $query . ')';
         return $query;
     }
-    function viewAll() {
+    function index() {
         $query = 'SELECT * FROM '  . $this -> table ;
         return $query;
     }
-    function delete($arr) {
+    function delete($arr, $columnArray) {
         $query = 'DELETE FROM '  . $this -> table ;
         $query =  $query. ' WHERE id = ' . $arr[0] ;
         echo $query;
