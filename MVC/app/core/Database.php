@@ -29,7 +29,6 @@ class Database
         if (! isset($this -> db_conn)) {
             echo "error in database connection";
         } else {
-            echo "connection to db made <br>";
         }
     }
 

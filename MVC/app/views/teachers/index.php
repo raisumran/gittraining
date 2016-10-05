@@ -1,5 +1,15 @@
 <html>
 <body>
+    <?php
+    // var_dump($GLOBALS);
+    foreach ($GLOBALS as $val) {
+        echo "ID: $val->id" . "</br>";
+        echo "Name: $val->name" . "</br>";
+        echo "city: $val->city " . "</br>";
+        echo "email: $val->email" . "</br>";
+        echo "<br> <br>";
+    }
+    ?>
     <?php $link = LINKPATH . 'teachers/create'; ?>
     <h1> Create </h1>
     <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">

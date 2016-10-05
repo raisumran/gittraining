@@ -20,13 +20,18 @@ class App
         // $this -> params = $params;
     }
     public function controllerCall() {
-        $cFactory =  new ControllerFactory();
-        $cHandle = $cFactory ->  createController(Request::getInstance() -> controller);
         $controller = Request::getInstance() -> controller;
         if($controller ==  'login'|| $controller ==  'home' || $controller == 'dashboard') {
+            $cHandle =    new $controller();
             $method =  Request::getInstance() -> method;
+            // echo $method;
             $cHandle -> $method();
+        } else {
+            $cFactory =  new ControllerFactory();
+            $cHandle = $cFactory ->  createController(Request::getInstance() -> controller);
+            $controller = Request::getInstance() -> controller;
         }
+
     }
 
 }

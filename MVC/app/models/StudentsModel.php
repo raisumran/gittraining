@@ -10,13 +10,10 @@ class StudentsModel extends Model
         parent::__construct();
     }
 
-    public function dbCall($columnArray) {
-            $array = Request::getInstance() -> params;
-            $method = Request::getInstance() -> method;
-            $dbQuery =  new DBquery('students');
-            $query =  $dbQuery -> $method($array, $columnArray);
-            $data =  $dbQuery -> returnQueryData($query);
-
+    public function dbCall() {
+        $dbQuery =  new DBquery('students', $this -> columnArray);
+        $data = $dbQuery -> dbCall();
+        return $data;
     }
 }
 

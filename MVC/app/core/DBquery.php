@@ -5,39 +5,49 @@
 class DBquery
 {
     private $table;
-    function __construct($table)
+    private $columnArray = array ();
+    function __construct($table, $columnArray)
     {
         $this ->  table = $table;
+        for($i = 0; $i < count($columnArray); $i++) {
+            $this -> columnArray[$i] = $columnArray[$i];
+        }
+        // $this ->  $columnArray = $columnArray;
     }
+    public function dbCall() {
+        $array = Request::getInstance() -> params;
+        $method = Request::getInstance() -> method;
+        $query =  $this -> $method($array, $this -> columnArray);
+        return $this -> returnQueryData($query);
+    }
+
     function create($arr, $columnArray)
     {
         // $query = 'INSERT INTO '. $this -> table .'(name,'.'city,'.'email)'. ' VALUES ('. "'". $arr[0] ."'".','. "'".$arr[1] ."'". ','. "'".$arr[2] ."'". ')';
-        $query = 'INSERT INTO '. $this -> table . ' VALUES (NULL, ';
+        $query = $this -> insertGeneral($this ->  table) . ' VALUES (NULL, ';
         foreach ($arr as &$value) {
             $query =  $query . "'". $value ."',";
         }
-        $query = rtrim($query, ",");
+        $query = $this -> rtrimGeneral($query, ",");
         $query = $query . ')';
         return $query;
     }
     function index() {
-        $query = 'SELECT * FROM '  . $this -> table ;
-        return $query;
+        // $query = 'SELECT * FROM '  . $this -> table ;
+        return $this -> selectAll($this ->  table);
     }
     function delete($arr, $columnArray) {
-        $query = 'DELETE FROM '  . $this -> table ;
-        $query =  $query. ' WHERE id = ' . $arr[0] ;
-        echo $query;
+        $query = $this -> deleteGeneral($this -> table);
+        $query =  $query. $this ->  where('id', $arr[0]);
         return $query;
     }
     function update($arr, $columnArray) {
-        $query = 'UPDATE '  . $this -> table .' SET ';
+        $query = $this -> updateGeneral($this -> table);
         for($i = 0; $i < count($columnArray); $i++) {
             $query =  $query . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
         }
-        $query = rtrim($query, ",");
-        $query =  $query. 'WHERE '. 'id = '. $arr[0];
-        // echo $query;
+        $query = $this -> rtrimGeneral($query, ",");
+        $query =  $query. $this -> where('id', $arr[0]);
         return $query;
     }
     function read($arr, $columnArray) {
@@ -45,12 +55,30 @@ class DBquery
         foreach ($columnArray as &$value) {
             $query =  $query . $value .",";
         }
-        $query = rtrim($query, ",");
+        $query = $this ->  rtrimGeneral($query, ",");
         $query =  $query .' FROM '.  $this -> table;
-        $query =  $query . ' WHERE id = ' . $arr[0];
+        $query =  $query . $this-> where('id', $arr[0]);
         // echo $query . "<br>";
         return $query;
-
+    }
+    // supporting functions
+    public function rtrimGeneral($query, $str) {
+        return rtrim($query, $str);
+    }
+    public function insertGeneral($tableName) {
+        return 'INSERT INTO '. $tableName;
+    }
+    public function selectAll($tableName) {
+        return 'SELECT * FROM '  . $tableName;
+    }
+    public function where($field, $value) {
+        return ' WHERE '. $field . ' = '. $value;
+    }
+    public function updateGeneral($tableName) {
+        return 'UPDATE '  . $tableName .' SET ';
+    }
+    public function deleteGeneral ($tableName) {
+        return 'DELETE FROM '  . $tableName ;
     }
     /**
     * [runs the query on database]
@@ -58,25 +86,27 @@ class DBquery
     * @param  [String]            $query [Query to be executed]
     * @return [array]                   [results of query]
     */
-
     public function returnQueryData($query)
     {
         $method = Request::getInstance() -> method;
+        $controller = Request::getInstance() -> controller;
 
         $table_data_array = array();
-        if($method == 'index' || $method == 'read') {
+        if($method == 'index' || $method == 'read' || $controller == 'login') {
         // if($flag ==  True) {
             try {
                 $response = Database::getInstance()-> db_conn ->  query($query);
                 while ($row = $response->fetch(\PDO::FETCH_ASSOC)) {
-                    array_push($table_data_array, $row);
+                    $obj = (object)$row;
+                    $table_data_array[$obj->id] = $obj;
+                    // array_push($table_data_array, $row);
                 }
             } catch (\PDOException $e) {
                 echo $e;
             }
-            foreach ($table_data_array as & $value) {
-                echo implode(" ",$value) . "<br>";
-            }
+            // foreach ($table_data_array as & $value) {
+            //     echo implode(" ",$value) . "<br>";
+            // }
             return $table_data_array;
         } else {
             Database::getInstance()-> db_conn -> query($query);

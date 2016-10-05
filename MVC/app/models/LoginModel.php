@@ -11,7 +11,7 @@ class LoginModel extends Model
      */
     public function __construct()
     {
-        parent::__construct();
+        // parent::__construct();
     }
     /**
      * [checks if username and password is legit and creates a sesion]
@@ -20,15 +20,14 @@ class LoginModel extends Model
      */
     public function run()
     {
-        echo "waaaaao";
         $login = Request::getInstance() -> params[0];
         $password = Request::getInstance() -> params[1];
-        $dbQuery = new DBquery('login');
+        $dbQuery = new DBquery('login', []);
         $data = $dbQuery -> returnQueryData(
             "SELECT * FROM `users`
             WHERE `login` LIKE '$login'
             AND `password` LIKE '$password'
-            LIMIT 0 , 30", True
+            LIMIT 0 , 30"
         );
         // require_once("../app/controllers/dashboard.php");
         if ($data != null) {

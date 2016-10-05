@@ -5,7 +5,7 @@
  */
 class Controller
 {
-    public $columnArray;
+    // public $columnArray;
     protected $controller;
     public $model;
     public function __construct() {
@@ -32,13 +32,16 @@ class Controller
      * @param  [array] $data [any data to be passes]
      */
     public function view($view, $data = []) {
-        set_include_path(dirname(__FILE__)."/../");
-        require_once ('../app/views/'. $view. '.php');
+        // set_include_path(dirname(__FILE__)."/../");
+        // require_once ('../app/views/'. $view. '.php');
     }
-    public function crud() {
+    public function action() {
         $user = $this -> model($this -> model);
-        $user -> dbCall($this ->  columnArray);
-        $this -> view($this -> controller . '/'. Request::getInstance() -> method, []);
+        $GLOBALS = $user -> dbCall();
+        $vM = new ViewManager($this -> controller . '/'. Request::getInstance() -> method);
+        $vM -> render();
+
+        // $this -> view($this -> controller . '/'. Request::getInstance() -> method, []);
     }
     // public function index() {
     //     $user = $this -> model($this -> model);

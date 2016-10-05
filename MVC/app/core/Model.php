@@ -11,8 +11,10 @@ class Model
      * [creates a new DB object when invoked]
      * @method __construct
     */
+    protected $columnArray;
     public function __construct()
     {
         $this->db = Database::getInstance();
+        $this ->  columnArray = array('id', 'name', 'city', 'email');
     }
 }

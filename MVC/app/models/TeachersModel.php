@@ -9,13 +9,10 @@ class TeachersModel extends Model
     {
         parent::__construct();
     }
-    public function dbCall($columnArray) {
-        $array = Request::getInstance() -> params;
-        $method = Request::getInstance() -> method;
-        $dbQuery =  new DBquery('teachers');
-        $query =  $dbQuery -> $method($array, $columnArray);
-        $data =  $dbQuery -> returnQueryData($query);
-
+    public function dbCall() {
+        $dbQuery =  new DBquery('teachers',$this -> columnArray );
+        $data = $dbQuery -> dbCall();
+        return $data;
     }
 }
 

@@ -6,6 +6,8 @@ class Home extends Controller
 {
     public function index()
     {
-        $this -> view('home/index', []);
+        $vM = new ViewManager('home/index');
+        $vM -> render();
+        // $this -> view('home/index', []);
     }
 }

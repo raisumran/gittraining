@@ -26,13 +26,10 @@ class Request
             unset($url[0]);
         }
         if (isset($url[1])) {
-            if (method_exists($controller, $url[1])) {
                 $method = $url[1];
                 unset($url[1]);
-            }
             $params = $url ? array_values($url) : [];
         }
-        echo $method;
         $this -> controller = $controller;
         $this -> method =  $method;
         $this -> params =  $params;

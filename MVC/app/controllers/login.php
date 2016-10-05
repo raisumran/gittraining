@@ -15,7 +15,9 @@ class Login extends Controller
      */
     public function logIn()
     {
-        $this -> view('login/index', []);
+        $vM = new ViewManager('login/index');
+        $vM -> render();
+        // $this -> view('login/index', []);
     }
     /**
      * [Calls model to ensure user is legit and then redirects to dashboard controller]

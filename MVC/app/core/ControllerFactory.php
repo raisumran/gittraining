@@ -11,6 +11,5 @@ class ControllerFactory
     }
     public function createController($controller){
         return new $controller();
-
     }
 }
