@@ -10,7 +10,6 @@
     </form>
 
     <?php $link = LINKPATH . 'students/delete'; ?>
-    <?php print $link; ?>
     <h1> Delete </h1>
     <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
     <label>ID</label><input type ="text" name = "param[]"/><br />

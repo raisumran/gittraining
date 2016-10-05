@@ -35,32 +35,36 @@ class Controller
         set_include_path(dirname(__FILE__)."/../");
         require_once ('../app/views/'. $view. '.php');
     }
-    public function index() {
+    public function crud() {
         $user = $this -> model($this -> model);
-        $user -> dbCall($this ->  columnArray, True);
-        $this -> view($this -> controller . '/index', []);
+        $user -> dbCall($this ->  columnArray);
+        $this -> view($this -> controller . '/'. Request::getInstance() -> method, []);
     }
-    public function create()
-    {
-        $user = $this -> model($this -> model);
-        $user -> dbCall($this ->  columnArray, False);
-        // $this -> view('students/create', []);
-    }
-    public function read()
-    {
-        $user = $this -> model($this -> model);
-        $user -> dbCall($this ->  columnArray, True);
-    }
-    public function update()
-    {
-        $user = $this -> model($this -> model);
-        $user -> dbCall($this ->  columnArray, False);
-    }
-    public function delete()
-    {
-        $user = $this -> model($this -> model);
-        $user -> dbCall($this ->  columnArray, False);
-
-    }
+    // public function index() {
+    //     $user = $this -> model($this -> model);
+    //     $user -> dbCall($this ->  columnArray, True);
+    //     $this -> view($this -> controller . '/index', []);
+    // }
+    // public function create()
+    // {
+    //     $user = $this -> model($this -> model);
+    //     $user -> dbCall($this ->  columnArray, False);
+    //     // $this -> view('students/create', []);
+    // }
+    // public function read()
+    // {
+    //     $user = $this -> model($this -> model);
+    //     $user -> dbCall($this ->  columnArray, True);
+    // }
+    // public function update()
+    // {
+    //     $user = $this -> model($this -> model);
+    //     $user -> dbCall($this ->  columnArray, False);
+    // }
+    // public function delete()
+    // {
+    //     $user = $this -> model($this -> model);
+    //     $user -> dbCall($this ->  columnArray, False);
+    // }
 }
 ?>

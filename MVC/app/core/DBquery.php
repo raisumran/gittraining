@@ -59,11 +59,13 @@ class DBquery
     * @return [array]                   [results of query]
     */
 
-    public function returnQueryData($query, $flag)
+    public function returnQueryData($query)
     {
-        // echo "returnQueryData in DBQuery";
+        $method = Request::getInstance() -> method;
+
         $table_data_array = array();
-        if($flag ==  True) {
+        if($method == 'index' || $method == 'read') {
+        // if($flag ==  True) {
             try {
                 $response = Database::getInstance()-> db_conn ->  query($query);
                 while ($row = $response->fetch(\PDO::FETCH_ASSOC)) {

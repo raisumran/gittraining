@@ -11,7 +11,7 @@ class Teachers extends Controller
         $this ->  model = 'TeachersModel';
         parent::__construct();
         $method =  Request::getInstance() -> method;
-        parent::$method();
+        parent::crud();
     }
 
 }

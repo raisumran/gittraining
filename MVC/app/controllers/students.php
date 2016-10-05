@@ -11,7 +11,7 @@ class Students extends Controller
         $this ->  model = 'StudentsModel';
         parent::__construct();
         $method =  Request::getInstance() -> method;
-        parent::$method();
+        parent::crud();
 
     }
 }
