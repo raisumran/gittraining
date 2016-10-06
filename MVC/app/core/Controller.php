@@ -27,7 +27,7 @@ class Controller
     public function model($model)
     {
         set_include_path(dirname(__FILE__)."/../");
-        $mF =  new ModelFactory($model);
+        new ModelFactory($model);
     }
     /**
      * [constructs the model and calls the view manager]

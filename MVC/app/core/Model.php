@@ -10,7 +10,7 @@ class Model
      * [creates a new DB object and calls database when invoked]
      * @method __construct
     */
-    protected $columnArray;
+    public $columnArray;
     public function __construct($cName)
     {
         $this->db = Database::getInstance();

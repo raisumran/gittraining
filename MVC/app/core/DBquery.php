@@ -30,9 +30,8 @@ class DBquery
     public function dbCall() {
         $array = Request::getInstance() -> params;
         $method = Request::getInstance() -> method;
-        echo $this -> query . " yeah cheez <br>";
         $this -> $method($array, $this -> columnArray);
-        echo $this -> query . " yeah cheez <br>";
+        echo $this ->  query . "<br>";
         return $this -> returnQueryData($this -> query);
     }
     /**
@@ -45,18 +44,19 @@ class DBquery
     {
         $this -> insertGeneral($this ->  table);
         $this -> query = $this -> query . ' VALUES (NULL, ';
-        foreach ($arr as &$value) {
-            $this -> query =  $this -> query . "'". $value ."',";
-        }
-        $this -> rtrimGeneral( ",");
+        $this ->  listAppend($arr);
         $this -> query = $this -> query . ')';
     }
+
     /**
      * [constructs a query for vieww ALL]
      * @method index
      */
     function index() {
-        $this -> selectAll($this ->  table);
+        $this -> select($this ->  table, []);
+        $this -> from();
+        $this-> orderBy(array('name'));
+        $this ->  limit('5');
     }
     /**
      * [constructs query for Delete method through helping functions]
@@ -67,7 +67,7 @@ class DBquery
 
     function delete($arr, $columnArray) {
         $this -> deleteGeneral($this -> table);
-        $query. $this ->  where('id', $arr[0]);
+        $this -> query . $this ->  where('id', $arr[0]);
     }
     /**
      * [constructs query for UPDATE method through helping functions]
@@ -76,9 +76,9 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
     function update($arr, $columnArray) {
-        $query = $this -> updateGeneral($this -> table);
+        $this -> updateGeneral($this -> table);
         for($i = 0; $i < count($columnArray); $i++) {
-            $query =  $query . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
+            $this -> query =  $this -> query . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
         }
         $this -> rtrimGeneral(",");
         $this -> where('id', $arr[0]);
@@ -90,13 +90,41 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
     function read($arr, $columnArray) {
-        $this -> query = 'SELECT ' ;
-        foreach ($columnArray as &$value) {
-            $query =  $query . $value .",";
+        $this -> select($this -> table, $columnArray);
+        $this -> from();
+        $this-> where('id', $arr[0]);
+    }
+    /**
+     * [implements sort functionality]
+     * @method orderBy
+     * @param  [type]  $arr [colums for sorting]
+     */
+    public function orderBy($arr) {
+        $this ->  query = ($this -> query) . ' ORDER BY ';
+        $this ->  listAppend($arr);
+    }
+    /**
+     * [limits the number of records to be displayed]
+     * @method limit
+     * @param  [string] $val [number of records to be displayed]
+     * @return [type]      [description]
+     */
+
+    public function limit($val) {
+        $this -> query =  ($this ->  query). ' LIMIT ' . $val;
+    }
+    /**
+     * [appends the list seperated by commas]
+     * @method listAppend
+     * @param  [array]     $arr [values to be appended]
+     * @return [type]          [description]
+     */
+
+    public function listAppend($arr) {
+        foreach ($arr as $value) {
+            $this -> query =  ($this -> query) . "'". $value ."',";
         }
-        $this ->  rtrimGeneral( ",");
-        $query .' FROM '.  $this -> table;
-        $query . $this-> where('id', $arr[0]);
+        $this -> rtrimGeneral( ",");
     }
     // supporting functions
     /**
@@ -106,8 +134,7 @@ class DBquery
      */
 
     public function rtrimGeneral($str) {
-        $this ->  query =  rtrim($this -> query, $str);
-        echo $this -> query . " yeah cheez <br>";
+        $this ->  query =  rtrim(($this -> query), $str);
     }
     /**
      * [Adds insert clause to query]
@@ -122,9 +149,24 @@ class DBquery
      * @method insertGeneral
      * @param  [string]        $tableName [name of the table]
      */
-    public function selectAll($tableName) {
-        $this -> query  = $this -> query . 'SELECT * FROM '  . $tableName;
-        // echo $this -> query . " yeah cheez <br>";
+    public function select($tableName, $arr) {
+
+        $this -> query = ($this -> query) . 'SELECT ';
+        if($arr == null) {
+            $this -> query  = $this -> query . ' * ' ;
+        } else {
+            foreach ($arr as &$value) {
+                $this -> query =  ($this -> query) . $value .",";
+            }
+            $this -> rtrimGeneral(",");
+        }
+    }
+    /**
+     * [Implements FROM part of query]
+     * @method from
+     */
+    public function from() {
+        $this -> query  = ($this -> query). ' FROM '  . ($this -> table);
     }
     /**
      * [inserts WHERE clause]
@@ -142,7 +184,7 @@ class DBquery
      * @param  [string]        $tableName [name of the table]
      */
     public function updateGeneral($tableName) {
-        $this -> query = $this -> query .  'UPDATE '  . $tableName .' SET ';
+        $this -> query = ($this -> query) .  'UPDATE '  . $tableName .' SET ';
     }
     /**
      * [Adds delete clause to query]

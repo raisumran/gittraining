@@ -24,7 +24,7 @@ class ViewManager
         if (file_exists('../app/views/'. $this -> viewfile. '.php')) {
             require_once ('../app/views/'. $this -> viewfile. '.php');
         } else {
-            require_once ('../app/views/dashboard/index.php');
+            require_once ('../app/views/default/index.php');
         }
     }
 }
