@@ -12,7 +12,6 @@ class DBquery
         for($i = 0; $i < count($columnArray); $i++) {
             $this -> columnArray[$i] = $columnArray[$i];
         }
-        // $this ->  $columnArray = $columnArray;
     }
     public function dbCall() {
         $array = Request::getInstance() -> params;
@@ -58,7 +57,6 @@ class DBquery
         $query = $this ->  rtrimGeneral($query, ",");
         $query =  $query .' FROM '.  $this -> table;
         $query =  $query . $this-> where('id', $arr[0]);
-        // echo $query . "<br>";
         return $query;
     }
     // supporting functions
@@ -119,7 +117,6 @@ class DBquery
     * @param  [String]   $query [Query to be executed]
     * @return [init]          [Number of records extracted]
     */
-
     public function rowCount($query)
     {
         $response = $this -> db_conn -> query($query);

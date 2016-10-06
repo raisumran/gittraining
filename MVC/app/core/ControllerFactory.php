@@ -10,6 +10,6 @@ class ControllerFactory
         // return (new $controller());
     }
     public function createController($controller){
-        return new $controller();
+        new $controller();
     }
 }

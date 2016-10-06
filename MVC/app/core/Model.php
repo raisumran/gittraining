@@ -12,9 +12,11 @@ class Model
      * @method __construct
     */
     protected $columnArray;
-    public function __construct()
+    public function __construct($cName)
     {
         $this->db = Database::getInstance();
         $this ->  columnArray = array('id', 'name', 'city', 'email');
+        $dbQuery =  new DBquery($cName, $this -> columnArray);
+        $GLOBALS = $dbQuery -> dbCall();
     }
 }

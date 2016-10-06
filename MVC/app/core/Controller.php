@@ -5,12 +5,12 @@
  */
 class Controller
 {
-    // public $columnArray;
     protected $controller;
-    public $model;
-    public function __construct() {
+    protected $model;
+    public function __construct($model) {
         $this -> controller = Request::getInstance() -> controller;
-        // $this -> controller = $controller;
+        $this ->  model = $model;
+        Self::action();
     }
     /**
      * [creates model object]
@@ -22,52 +22,12 @@ class Controller
     {
         set_include_path(dirname(__FILE__)."/../");
         $mF =  new ModelFactory();
-        $ret = $mF -> createModel($model);
-        return $ret;
-    }
-    /**
-     * [view description]
-     * @method view
-     * @param  [string] $view [view to display]
-     * @param  [array] $data [any data to be passes]
-     */
-    public function view($view, $data = []) {
-        // set_include_path(dirname(__FILE__)."/../");
-        // require_once ('../app/views/'. $view. '.php');
+        $mF -> createModel($model);
     }
     public function action() {
         $user = $this -> model($this -> model);
-        $GLOBALS = $user -> dbCall();
         $vM = new ViewManager($this -> controller . '/'. Request::getInstance() -> method);
         $vM -> render();
-
-        // $this -> view($this -> controller . '/'. Request::getInstance() -> method, []);
     }
-    // public function index() {
-    //     $user = $this -> model($this -> model);
-    //     $user -> dbCall($this ->  columnArray, True);
-    //     $this -> view($this -> controller . '/index', []);
-    // }
-    // public function create()
-    // {
-    //     $user = $this -> model($this -> model);
-    //     $user -> dbCall($this ->  columnArray, False);
-    //     // $this -> view('students/create', []);
-    // }
-    // public function read()
-    // {
-    //     $user = $this -> model($this -> model);
-    //     $user -> dbCall($this ->  columnArray, True);
-    // }
-    // public function update()
-    // {
-    //     $user = $this -> model($this -> model);
-    //     $user -> dbCall($this ->  columnArray, False);
-    // }
-    // public function delete()
-    // {
-    //     $user = $this -> model($this -> model);
-    //     $user -> dbCall($this ->  columnArray, False);
-    // }
 }
 ?>
