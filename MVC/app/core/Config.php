@@ -1,4 +1,8 @@
 <?php
+/**
+ * defines the configuration varibales
+ */
+
 define('ABSPATH', "/var/www/html/PHP/MVC/");
 define('LINKPATH', "http://localhost/PHP/MVC/public/");
 define('HOST', "localhost");

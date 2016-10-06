@@ -1,13 +1,15 @@
 <?php
 /**
- * This class parses URl and calls the respective controller and method
+ * Initiates the app
  */
 
 class App
 {
+    /**
+     * [constructs the required controoler via controlerFactory]
+     * @method controllerCall
+     */
     public function controllerCall() {
-            $cFactory =  new ControllerFactory();
-            $cHandle = $cFactory ->  createController(Request::getInstance() -> controller);
-            // $controller = Request::getInstance() -> controller;
+            $cFactory =  new ControllerFactory(Request::getInstance() -> controller);
     }
 }

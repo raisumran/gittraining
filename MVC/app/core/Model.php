@@ -6,9 +6,8 @@ class Model
 {
 
     protected $db;
-    // public $db
     /**
-     * [creates a new DB object when invoked]
+     * [creates a new DB object and calls database when invoked]
      * @method __construct
     */
     protected $columnArray;

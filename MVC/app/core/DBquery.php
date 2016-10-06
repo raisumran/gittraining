@@ -1,82 +1,156 @@
 <?php
 /**
- *
+ * this class communicates with database
  */
 class DBquery
 {
+    public $query;
     private $table;
     private $columnArray = array ();
+    /**
+     * [allocates values to properties of class]
+     * @method __construct
+     * @param  [string]      $table       [name of the table to change]
+     * @param  [string]      $columnArray [colums list of the concerend table]
+     */
+
     function __construct($table, $columnArray)
     {
+        $this -> query = "";
         $this ->  table = $table;
         for($i = 0; $i < count($columnArray); $i++) {
             $this -> columnArray[$i] = $columnArray[$i];
         }
     }
+    /**
+     * [constructs and executes a query ]
+     * @method dbCall
+     * @return [Array] [result of query execution]
+     */
     public function dbCall() {
         $array = Request::getInstance() -> params;
         $method = Request::getInstance() -> method;
-        $query =  $this -> $method($array, $this -> columnArray);
-        return $this -> returnQueryData($query);
+        echo $this -> query . " yeah cheez <br>";
+        $this -> $method($array, $this -> columnArray);
+        echo $this -> query . " yeah cheez <br>";
+        return $this -> returnQueryData($this -> query);
     }
-
+    /**
+     * [constructs query for create method through helping functions]
+     * @method create
+     * @param  [array] $arr         [input arguments]
+     * @param  [array] $columnArray [colums of concerned table]
+     */
     function create($arr, $columnArray)
     {
-        // $query = 'INSERT INTO '. $this -> table .'(name,'.'city,'.'email)'. ' VALUES ('. "'". $arr[0] ."'".','. "'".$arr[1] ."'". ','. "'".$arr[2] ."'". ')';
-        $query = $this -> insertGeneral($this ->  table) . ' VALUES (NULL, ';
+        $this -> insertGeneral($this ->  table);
+        $this -> query = $this -> query . ' VALUES (NULL, ';
         foreach ($arr as &$value) {
-            $query =  $query . "'". $value ."',";
+            $this -> query =  $this -> query . "'". $value ."',";
         }
-        $query = $this -> rtrimGeneral($query, ",");
-        $query = $query . ')';
-        return $query;
+        $this -> rtrimGeneral( ",");
+        $this -> query = $this -> query . ')';
     }
+    /**
+     * [constructs a query for vieww ALL]
+     * @method index
+     */
     function index() {
-        // $query = 'SELECT * FROM '  . $this -> table ;
-        return $this -> selectAll($this ->  table);
+        $this -> selectAll($this ->  table);
     }
+    /**
+     * [constructs query for Delete method through helping functions]
+     * @method delete
+     * @param  [array] $arr         [input arguments]
+     * @param  [array]  [colums of concerned table]
+     */
+
     function delete($arr, $columnArray) {
-        $query = $this -> deleteGeneral($this -> table);
-        $query =  $query. $this ->  where('id', $arr[0]);
-        return $query;
+        $this -> deleteGeneral($this -> table);
+        $query. $this ->  where('id', $arr[0]);
     }
+    /**
+     * [constructs query for UPDATE method through helping functions]
+     * @method update
+     * @param  [array] $arr         [input arguments]
+     * @param  [array]  [colums of concerned table]
+     */
     function update($arr, $columnArray) {
         $query = $this -> updateGeneral($this -> table);
         for($i = 0; $i < count($columnArray); $i++) {
             $query =  $query . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
         }
-        $query = $this -> rtrimGeneral($query, ",");
-        $query =  $query. $this -> where('id', $arr[0]);
-        return $query;
+        $this -> rtrimGeneral(",");
+        $this -> where('id', $arr[0]);
     }
+    /**
+     * [constructs query for Read method through helping functions]
+     * @method Read
+     * @param  [array] $arr         [input arguments]
+     * @param  [array]  [colums of concerned table]
+     */
     function read($arr, $columnArray) {
-        $query = 'SELECT ' ;
+        $this -> query = 'SELECT ' ;
         foreach ($columnArray as &$value) {
             $query =  $query . $value .",";
         }
-        $query = $this ->  rtrimGeneral($query, ",");
-        $query =  $query .' FROM '.  $this -> table;
-        $query =  $query . $this-> where('id', $arr[0]);
-        return $query;
+        $this ->  rtrimGeneral( ",");
+        $query .' FROM '.  $this -> table;
+        $query . $this-> where('id', $arr[0]);
     }
     // supporting functions
-    public function rtrimGeneral($query, $str) {
-        return rtrim($query, $str);
+    /**
+     * [trims the trailing characters of query as per input]
+     * @method rtrimGeneral
+     * @param  [string]       $str [char to delete]
+     */
+
+    public function rtrimGeneral($str) {
+        $this ->  query =  rtrim($this -> query, $str);
+        echo $this -> query . " yeah cheez <br>";
     }
+    /**
+     * [Adds insert clause to query]
+     * @method insertGeneral
+     * @param  [string]        $tableName [name of the table]
+     */
     public function insertGeneral($tableName) {
-        return 'INSERT INTO '. $tableName;
+        $this -> query = $this -> query . 'INSERT INTO '. $tableName;
     }
+    /**
+     * [Adds selectALL clause to query]
+     * @method insertGeneral
+     * @param  [string]        $tableName [name of the table]
+     */
     public function selectAll($tableName) {
-        return 'SELECT * FROM '  . $tableName;
+        $this -> query  = $this -> query . 'SELECT * FROM '  . $tableName;
+        // echo $this -> query . " yeah cheez <br>";
     }
+    /**
+     * [inserts WHERE clause]
+     * @method where
+     * @param  [String] $field [field to be compared]
+     * @param  [String] $value [Value to be compared]
+     * @return [type]        [description]
+     */
     public function where($field, $value) {
-        return ' WHERE '. $field . ' = '. $value;
+        $this -> query = $this -> query . ' WHERE '. $field . ' = '. $value;
     }
+    /**
+     * [Adds update clause to query]
+     * @method updateGeneral
+     * @param  [string]        $tableName [name of the table]
+     */
     public function updateGeneral($tableName) {
-        return 'UPDATE '  . $tableName .' SET ';
+        $this -> query = $this -> query .  'UPDATE '  . $tableName .' SET ';
     }
+    /**
+     * [Adds delete clause to query]
+     * @method deleteGeneral
+     * @param  [string]        $tableName [name of the table]
+     */
     public function deleteGeneral ($tableName) {
-        return 'DELETE FROM '  . $tableName ;
+        $this -> query = $this -> query . 'DELETE FROM '  . $tableName ;
     }
     /**
     * [runs the query on database]
@@ -102,25 +176,11 @@ class DBquery
             } catch (\PDOException $e) {
                 echo $e;
             }
-            // foreach ($table_data_array as & $value) {
-            //     echo implode(" ",$value) . "<br>";
-            // }
             return $table_data_array;
         } else {
             Database::getInstance()-> db_conn -> query($query);
             return null;
         }
-    }
-    /**
-    * [counts the number of results generated by query]
-    * @method rowCount
-    * @param  [String]   $query [Query to be executed]
-    * @return [init]          [Number of records extracted]
-    */
-    public function rowCount($query)
-    {
-        $response = $this -> db_conn -> query($query);
-        return $response ->rowCount();
     }
 }
 

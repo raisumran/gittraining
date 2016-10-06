@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * This class parses URl and stores the respective controller and method
  */
 class Request
 {
@@ -8,6 +8,11 @@ class Request
     public $controller;
     public $method;
     public $params;
+    /**
+     * [returns the instance if exists or initiates an instance]
+     * @method getInstance
+     * @return [Request]      [current instance of request class]
+     */
 
     public static function getInstance() {
         if (Request::$_instance == null) {
@@ -15,6 +20,11 @@ class Request
         }
         return Request::$_instance;
     }
+    /**
+     * [parses URL and sets the valued of method , controller and parmas ]
+     * @method __construct
+     */
+
     function __construct()
     {
         $controller = 'home';

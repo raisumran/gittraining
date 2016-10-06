@@ -1,6 +1,6 @@
 <?php
 /**
-* This class communicates with database
+* This class creates a connection with database
 */
 
 class Database
@@ -8,6 +8,12 @@ class Database
 
     public $db_conn;
     private static $_instance = null;
+    /**
+     * [implemements singelton pattern]
+     * returns the instance if exists or initates it
+     * @method getInstance
+     * @return [type]      [description]
+     */
     public static function getInstance() {
         if (Database::$_instance == null) {
             Database::$_instance = new Database();
@@ -31,5 +37,4 @@ class Database
         } else {
         }
     }
-
 }

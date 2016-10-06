@@ -1,19 +1,14 @@
 <?php
 /**
- *
+ *  constructs models
  */
 class ModelFactory
 {
 
-    function __construct()
+    function __construct($model)
     {
-        # code...
-    }
-    function createModel($model) {
         return new $model();
-
     }
-
 }
 
 ?>

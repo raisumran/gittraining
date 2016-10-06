@@ -1,15 +1,18 @@
 <?php
 /**
- *
+ * constructs controllers
  */
 class ControllerFactory
 {
 
-    function __construct()
+    /**
+     * [constructs contoller]
+     * @method __construct
+     * @param  [String]      $controller [name of the contoller]
+     */
+
+    function __construct($controller)
     {
-        // return (new $controller());
-    }
-    public function createController($controller){
         new $controller();
     }
 }
