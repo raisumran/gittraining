@@ -14,6 +14,11 @@ class Controller
      * @param  [type]      $model [description]
      */
     public function __construct() {
+        echo "called";
+        foreach (array_keys($_POST) as $field)
+        {
+            echo $_POST[$field];
+        }
         $this -> controller = Request::getInstance() -> controller;
         $this ->  model = get_class($this). 'Model';
         Self::action();

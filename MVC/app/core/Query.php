@@ -14,6 +14,8 @@
         public $update;
         public $set;
         public $join;
+        public $orderBy;
+        public $limit;
         function __construct()
         {
             $this  -> where = " WHERE ";
@@ -88,22 +90,21 @@
         public function join($type, $table) {
             $this ->  join =  $this ->  join . $type . ' JOIN '. $table;
         }
-        //  * [implements sort functionality]
-        //  * @method orderBy
-        //  * @param  [type]  $arr [colums for sorting]
-        //  */
-        // public function orderBy($arr) {
-        //     $this ->  query = ($this -> query) . ' ORDER BY ';
-        //     $this ->  listAppend($arr);
-        // }
-        // /**
-        //  * [limits the number of records to be displayed]
-        //  * @method limit
-        //  * @param  [string] $val [number of records to be displayed]
-        //  * @return [type]      [description]
-        //  */
-        //
-        // public function limit($val) {
-        //     $this -> query =  ($this ->  query). ' LIMIT ' . $val;
-        // }
+        /** [implements sort functionality]
+         * @method orderBy
+         * @param  [type]  $arr [colums for sorting]
+         */
+        public function orderBy($arr) {
+            $this ->  orderBy = ($this -> orderBy) . ' ORDER BY ';
+        }
+        /**
+         * [limits the number of records to be displayed]
+         * @method limit
+         * @param  [string] $val [number of records to be displayed]
+         * @return [type]      [description]
+         */
+
+        public function limit($val) {
+            $this -> limit =  ($this ->  limit) . ' LIMIT ' . $val;
+        }
     }

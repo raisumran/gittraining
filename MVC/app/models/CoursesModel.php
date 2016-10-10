@@ -3,7 +3,7 @@
  * Inherits Model class and manages model for courses
  */
 
-class CourseModel extends Model
+class CoursesModel extends Model
 {
     /**
      * [calls the parents constructor for students]
@@ -12,7 +12,7 @@ class CourseModel extends Model
 
     function __construct()
     {
-        $this ->  columnArray = array('id', 'name', 'city', 'email');
+        $this ->  columnArray = array('id', 'name', 'teacherID', 'capacity');
         parent::__construct();
     }
 }
