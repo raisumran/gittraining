@@ -5,9 +5,10 @@
     class Query
     {
         //
-        public static $fields;
-        public static $where;
-        public static $update;
+        public $table;
+        public $fields;
+        public $where;
+        public $update;
 
         function __construct()
         {
@@ -15,7 +16,6 @@
             $this ->  fields = array();
             $this  -> where = array();
             $this  -> update = array();
-            $this  -> set = " SET ";
         }
         /**
          * [Adds selectALL clause to query]
@@ -24,41 +24,22 @@
          */
         public function select( $arr) {
             $this ->  fields = $arr;
-            return self;
-        }
-        /**
-         * [Implements FROM part of query]
-         * @method from
-         */
-        public function from() {
-
-        }
-        /**
-         * [appends the list seperated by commas]
-         * @method listAppend
-         * @param  [array]     $arr [values to be appended]
-         * @return [type]          [description]
-         */
-
-        public function listAppend($arr) {
-
-            foreach ($arr as $value) {
-                $this ->  values =  ($this -> values) . "'". $value ."',";
-            }
-            $this ->  values = rtrim ( $this ->  values, ",");
+            return $this;
         }
         /**
          * [Adds insert clause to query]
          * @method insertGeneral
          * @param  [string]        $tableName [name of the table]
          */
-        public function insertGeneral($arr) {
+        public function insert($arr) {
             $this ->  fields = $arr;
+            return $this;
         }
         public function where($compField, $compValue, $compOper) {
             $this -> where[0] = $compField;
             $this -> where[1] = $compValue;
             $this ->  where[2] = $compOper;
+            return $this;
         }
         /**
          * [Adds update clause to query]
@@ -68,6 +49,7 @@
         public function update($columnArray, $arr) {
             $this ->  update[0] = $columnArray;
             $this ->  update[1]  = $arr;
+            return $this;
         }
         /**
          * [set the join property of query class]

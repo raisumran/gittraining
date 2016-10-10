@@ -49,7 +49,7 @@ class DBquery
      */
     function create($arr, $columnArray)
     {
-        $this -> query -> insertGeneral($arr);
+        $this -> query -> insert($arr);
         return $this ->  dbPrepare('create');
     }
     /**
@@ -70,8 +70,7 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
     function update($arr, $columnArray) {
-        $this -> query ->  update($columnArray, $arr);
-        $this -> query -> where(array('id'), array($arr[0]), array(' = '));
+        $this -> query ->  update($columnArray, $arr) -> where(array('id'), array($arr[0]), array(' = '));
         return $this -> dbPrepare('update');
     }
     /**
@@ -81,8 +80,7 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
     function read($arr, $columnArray) {
-        $this -> query  -> select( $columnArray);
-        $this -> query -> where(array('id'), array($arr[0]), array(' = '));
+        $this -> query  -> select( $columnArray) -> where(array('id'), array($arr[0]), array(' = '));
         return $this ->  dbPrepare('read');
     }
     // /**
@@ -100,34 +98,17 @@ class DBquery
     function dbPrepare($method) {
         $query = " ";
         if($method ==  'index') {
-            $query = $query . ' SELECT ';
-            if($this -> query -> select[1] == null) {
-                $query   = $query . ' * ' ;
-            } else {
-                foreach ( $this -> query -> select[1] as $value) {
-                    $query =  $query . "'". $value ."',";
-                }
-                $query = rtrim ( $query, ",");
-            }
-            $query =  $query . ' FROM ';
-            $query =  $query . $this ->  query -> table;
+            $query = $query .  $this -> selectHelp();
         }else if($method ==  'create') {
             $query = $query . 'INSERT INTO ';
             $query =  $query .  $this -> query ->  table;
             $query = $query . ' VALUES (NULL, ';
-            foreach (($this -> query -> fields) as $value) {
-                $query =  $query . "'". $value ."',";
-            }
-            $query = rtrim ( $query, ",");
+            $query =  $query. $this -> listHelp();
             $query = $query . ' )';
         } else if($method == 'delete') {
             $query = $query .  ' DELETE ';
             $query = $query . 'FROM ' . $this ->  query ->  table;
-            $query = $query . ' WHERE ';
-            for ($i =0; $i < count($this -> query -> where[0]); $i++) {
-                $query = $query . $this -> query -> where[0][$i] . $this -> query -> where[2][$i] . $this -> query -> where[1][$i] . ' AND';
-            }
-            $query =  rtrim($query, "AND");
+            $query = $query . $this ->  whereHelp();
         }else if($method ==  'update') {
             $query = $query . 'UPDATE ' . $this -> query -> table;
             $query = $query . ' SET ';
@@ -135,41 +116,63 @@ class DBquery
                 $query =  $query . $this ->query ->update[0][$i] . ' = ' . "'". $this ->query ->update[1][$i] ."',";
             }
             $query =  rtrim($query, ",");
-            $query = $query . ' WHERE ';
-            for ($i =0; $i < count($this -> query -> where[0]); $i++) {
-                $query = $query . $this -> query -> where[0][$i] . $this -> query -> where[2][$i] . $this -> query -> where[1][$i] . ' AND';
-            }
-            $query =  rtrim($query, "AND");
+            $query = $query . $this ->  whereHelp();
         } else if($method == 'Read') {
-            $query = $query . ' SELECT ';
-            if($this -> query -> select[1] == null) {
-                $query   = $query . ' * ' ;
-            } else {
-                foreach ( $this -> query -> select[1] as $value) {
-                    $query =  $query . "'". $value ."',";
-                }
-                $query = rtrim ( $query, ",");
-            }
-            $query =  $query . ' FROM ';
-            $query =  $query . $this ->  query -> table;
-            $query = $query . ' WHERE ';
-            for ($i =0; $i < count($this -> query -> where[0]); $i++) {
-                $query = $query . $this -> query -> where[0][$i] . $this -> query -> where[2][$i] . $this -> query -> where[1][$i] . ' AND';
-            }
-            $query =  rtrim($query, "AND");
+            $query = $query . $this ->  selectHelp();
+            $query = $query . $this ->  whereHelp();
         }
         return $query;
     }
+    /**
+     * [implements SELECT and FROM]
+     * @method selectHelp
+     * @return [String]     [final form of query]
+     */
 
+    public function selectHelp() {
+        $query = " ";
+        $query = $query . ' SELECT ';
+        if($this -> query -> fields == null) {
+            $query   = $query . ' * ' ;
+        } else {
+            $query =  $query. $this -> listHelp();
+        }
+        $query =  $query . ' FROM ';
+        $query =  $query . $this ->  query -> table;
+        return $query;
+    }
+    /**
+     * [Implements WHERE clause along with condition]
+     * @method whereHelp
+     * @return [String]    [WHERE part of query]
+     */
+
+    public function whereHelp() {
+        $query = " ";
+        $query = $query . ' WHERE ';
+        for ($i =0; $i < count($this -> query -> where[0]); $i++) {
+            $query = $query . $this -> query -> where[0][$i] . $this -> query -> where[2][$i] . $this -> query -> where[1][$i] . ' AND';
+        }
+        $query =  rtrim($query, "AND");
+        return $query;
+    }
+    /**
+     * [Helps create a list seperated by commas]
+     * @method listHelp
+     * @return [String]   [List of objects]
+     */
+    public function listHelp() {
+        $query = " ";
+        foreach (($this -> query -> fields) as $value) {
+            $query =  $query . "'". $value ."',";
+        }
+        $query = rtrim ( $query, ",");
+        return $query;
+    }
     // // public function columnNames() {
     // //     $this -> query = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS ';
     // //     $this ->  where('table_name', $this -> table);
     // //     echo $this -> query;
     // //     return $this ->  query;
     // // }
-
-
-
-
 }
-?>

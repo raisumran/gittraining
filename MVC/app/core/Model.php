@@ -15,9 +15,6 @@ class Model
     {
 
         $this->db = Database::getInstance();
-        // $dbQuery =  new DBquery(Request::getInstance() -> controller, $this -> columnArray);
-        // $lame =  $dbQuery -> columnNames();
-        // $this ->  columnArray = $this -> db -> returnQueryData($lame);
         $dbQuery =  new DBquery(Request::getInstance() -> controller, $this -> columnArray);
         $query = $dbQuery -> dbCall();
         echo $query;
