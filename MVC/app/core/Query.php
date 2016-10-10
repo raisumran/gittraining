@@ -4,25 +4,35 @@
      */
     class Query
     {
-        public $select;
-        public $from;
-        public $insert;
-        public $values;
-        public $cond;
-        public $where;
-        public $delete;
-        public $update;
-        public $set;
-        public $join;
-        public $orderBy;
-        public $limit;
+        //
+        public static $fields;
+        public static $where;
+        public static $update;
+
         function __construct()
         {
-            $this  -> where = " WHERE ";
-            $this  -> delete =  ' DELETE ';
+            $this -> table = Request::getInstance() -> controller;
+            $this ->  fields = array();
+            $this  -> where = array();
+            $this  -> update = array();
             $this  -> set = " SET ";
         }
+        /**
+         * [Adds selectALL clause to query]
+         * @method insertGeneral
+         * @param  [string]        $tableName [name of the table]
+         */
+        public function select( $arr) {
+            $this ->  fields = $arr;
+            return self;
+        }
+        /**
+         * [Implements FROM part of query]
+         * @method from
+         */
+        public function from() {
 
+        }
         /**
          * [appends the list seperated by commas]
          * @method listAppend
@@ -31,6 +41,7 @@
          */
 
         public function listAppend($arr) {
+
             foreach ($arr as $value) {
                 $this ->  values =  ($this -> values) . "'". $value ."',";
             }
@@ -41,44 +52,22 @@
          * @method insertGeneral
          * @param  [string]        $tableName [name of the table]
          */
-        public function insertGeneral($tableName) {
-            $this -> insert = $this -> insert . 'INSERT INTO '. $tableName;
+        public function insertGeneral($arr) {
+            $this ->  fields = $arr;
         }
-        /**
-         * [Adds selectALL clause to query]
-         * @method insertGeneral
-         * @param  [string]        $tableName [name of the table]
-         */
-        public function select( $arr) {
-
-            $this -> select  = ($this -> select) . 'SELECT ';
-            if($arr == null) {
-                $this -> select  = $this -> select . ' * ' ;
-            } else {
-                $this ->  listAppend($arr);
-                $this -> select = $this -> select . $this -> values;
-            }
-        }
-        /**
-         * [Implements FROM part of query]
-         * @method from
-         */
-        public function from() {
-            $this -> from  = ($this  ->from). ' FROM '  . (Request::getInstance() -> controller);
-        }
-        public function cond($field, $value, $oper) {
-            for ($i =0; $i < count($field); $i++) {
-                $this -> cond = $this -> cond . $field[$i] . $oper[$i] . $value[$i] . ' AND';
-            }
-            $this -> cond =  rtrim($this -> cond, "AND");
+        public function where($compField, $compValue, $compOper) {
+            $this -> where[0] = $compField;
+            $this -> where[1] = $compValue;
+            $this ->  where[2] = $compOper;
         }
         /**
          * [Adds update clause to query]
          * @method updateGeneral
          * @param  [string]        $tableName [name of the table]
          */
-        public function updateGeneral($tableName) {
-            $this -> update = ($this -> update) .  'UPDATE '  . $tableName;
+        public function update($columnArray, $arr) {
+            $this ->  update[0] = $columnArray;
+            $this ->  update[1]  = $arr;
         }
         /**
          * [set the join property of query class]
