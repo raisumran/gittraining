@@ -13,9 +13,9 @@ class Controller
      * @method __construct
      * @param  [type]      $model [description]
      */
-    public function __construct($model) {
+    public function __construct() {
         $this -> controller = Request::getInstance() -> controller;
-        $this ->  model = $model;
+        $this ->  model = get_class($this). 'Model';
         Self::action();
     }
     /**

@@ -31,10 +31,8 @@ class Request
         $method =  'index';
         $params = [];
         $url = $this -> parseUrl();
-        if (file_exists('../app/controllers/'. $url[0]. '.php')) {
             $controller = $url[0];
             unset($url[0]);
-        }
         if (isset($url[1])) {
                 $method = $url[1];
                 unset($url[1]);

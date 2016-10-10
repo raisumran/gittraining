@@ -1,6 +1,6 @@
 <?php
 /**
- * this class communicates with database
+ * this class uses the query class to make the query for various actions
  */
 class DBquery
 {
@@ -16,7 +16,7 @@ class DBquery
 
     function __construct($table, $columnArray)
     {
-        $this -> query = "";
+        $this -> query = new Query();
         $this ->  table = $table;
         for($i = 0; $i < count($columnArray); $i++) {
             $this -> columnArray[$i] = $columnArray[$i];
@@ -30,10 +30,14 @@ class DBquery
     public function dbCall() {
         $array = Request::getInstance() -> params;
         $method = Request::getInstance() -> method;
-        $this -> $method($array, $this -> columnArray);
-        echo $this ->  query . "<br>";
-        return $this -> returnQueryData($this -> query);
+        return $this -> $method($array, $this -> columnArray);
     }
+    // // public function columnNames() {
+    // //     $this -> query = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS ';
+    // //     $this ->  where('table_name', $this -> table);
+    // //     echo $this -> query;
+    // //     return $this ->  query;
+    // // }
     /**
      * [constructs query for create method through helping functions]
      * @method create
@@ -42,21 +46,18 @@ class DBquery
      */
     function create($arr, $columnArray)
     {
-        $this -> insertGeneral($this ->  table);
-        $this -> query = $this -> query . ' VALUES (NULL, ';
-        $this ->  listAppend($arr);
-        $this -> query = $this -> query . ')';
+        $this -> query -> insertGeneral($this ->  table);
+        $this -> query ->  listAppend($arr);
+        return ($this -> query -> insert . ' VALUES (NULL, '. $this -> query -> values . ' )');
     }
-
     /**
      * [constructs a query for vieww ALL]
      * @method index
      */
     function index() {
-        $this -> select($this ->  table, []);
-        $this -> from();
-        $this-> orderBy(array('name'));
-        $this ->  limit('5');
+        $this -> query -> select([]);
+        $this -> query -> from();
+        return ($this ->  query -> select . $this -> query -> from);
     }
     /**
      * [constructs query for Delete method through helping functions]
@@ -66,8 +67,10 @@ class DBquery
      */
 
     function delete($arr, $columnArray) {
-        $this -> deleteGeneral($this -> table);
-        $this -> query . $this ->  where('id', $arr[0]);
+        $this -> query -> deleteGeneral();
+        $this -> query ->  from();
+        $this -> query -> cond(array('id'), array($arr[0]), array(' = '));
+        return($this -> query -> delete . $this -> query -> from . $this -> query -> where .  $this -> query ->cond);
     }
     /**
      * [constructs query for UPDATE method through helping functions]
@@ -76,12 +79,17 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
     function update($arr, $columnArray) {
-        $this -> updateGeneral($this -> table);
+        $this -> query ->  updateGeneral($this -> table);
+
+        // repetition , how can I avoid it
+        $temp = " ";
         for($i = 0; $i < count($columnArray); $i++) {
-            $this -> query =  $this -> query . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
+            $temp =  $temp . $columnArray[$i] . ' = ' . "'". $arr[$i] ."',";
         }
-        $this -> rtrimGeneral(",");
-        $this -> where('id', $arr[0]);
+        $temp =  rtrim($temp, ",");
+        // repetition
+        $this -> query -> cond(array('id'), array($arr[0]), array(' = '));
+        return ($this -> query -> update .$this -> query -> set . $temp . $this -> query -> where . $this -> query -> cond );
     }
     /**
      * [constructs query for Read method through helping functions]
@@ -90,140 +98,24 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
     function read($arr, $columnArray) {
-        $this -> select($this -> table, $columnArray);
-        $this -> from();
-        $this-> where('id', $arr[0]);
+        $this -> query  -> select( $columnArray);
+        $this -> query -> from();
+        $this -> query -> cond(array('id'), array($arr[0]), array(' = '));
+        return ($this -> query  -> select . $this -> query -> from . $this-> query -> where . $this -> query -> cond);
     }
-    /**
-     * [implements sort functionality]
-     * @method orderBy
-     * @param  [type]  $arr [colums for sorting]
-     */
-    public function orderBy($arr) {
-        $this ->  query = ($this -> query) . ' ORDER BY ';
-        $this ->  listAppend($arr);
-    }
-    /**
-     * [limits the number of records to be displayed]
-     * @method limit
-     * @param  [string] $val [number of records to be displayed]
-     * @return [type]      [description]
-     */
+    // /**
+    //  * [this performs inner or outer join]
+    //  * @method join
+    //  * @return [type] [description]
+    //  */
+    //
+    // public function join() {
+    //     $this -> query  -> select($fields);
+    //     $this -> query -> from($this -> table);
+    //     $this -> query -> join($type, $this ->  table );
+    //     $this ->query -> cond($arr, $arr1, $arr2);
+    //     return($this ->  query -> select . $this -> query -> from .  $this -> query -> join .' ON ' . $this -> query -> cond);
+    // }
 
-    public function limit($val) {
-        $this -> query =  ($this ->  query). ' LIMIT ' . $val;
-    }
-    /**
-     * [appends the list seperated by commas]
-     * @method listAppend
-     * @param  [array]     $arr [values to be appended]
-     * @return [type]          [description]
-     */
-
-    public function listAppend($arr) {
-        foreach ($arr as $value) {
-            $this -> query =  ($this -> query) . "'". $value ."',";
-        }
-        $this -> rtrimGeneral( ",");
-    }
-    // supporting functions
-    /**
-     * [trims the trailing characters of query as per input]
-     * @method rtrimGeneral
-     * @param  [string]       $str [char to delete]
-     */
-
-    public function rtrimGeneral($str) {
-        $this ->  query =  rtrim(($this -> query), $str);
-    }
-    /**
-     * [Adds insert clause to query]
-     * @method insertGeneral
-     * @param  [string]        $tableName [name of the table]
-     */
-    public function insertGeneral($tableName) {
-        $this -> query = $this -> query . 'INSERT INTO '. $tableName;
-    }
-    /**
-     * [Adds selectALL clause to query]
-     * @method insertGeneral
-     * @param  [string]        $tableName [name of the table]
-     */
-    public function select($tableName, $arr) {
-
-        $this -> query = ($this -> query) . 'SELECT ';
-        if($arr == null) {
-            $this -> query  = $this -> query . ' * ' ;
-        } else {
-            foreach ($arr as &$value) {
-                $this -> query =  ($this -> query) . $value .",";
-            }
-            $this -> rtrimGeneral(",");
-        }
-    }
-    /**
-     * [Implements FROM part of query]
-     * @method from
-     */
-    public function from() {
-        $this -> query  = ($this -> query). ' FROM '  . ($this -> table);
-    }
-    /**
-     * [inserts WHERE clause]
-     * @method where
-     * @param  [String] $field [field to be compared]
-     * @param  [String] $value [Value to be compared]
-     * @return [type]        [description]
-     */
-    public function where($field, $value) {
-        $this -> query = $this -> query . ' WHERE '. $field . ' = '. $value;
-    }
-    /**
-     * [Adds update clause to query]
-     * @method updateGeneral
-     * @param  [string]        $tableName [name of the table]
-     */
-    public function updateGeneral($tableName) {
-        $this -> query = ($this -> query) .  'UPDATE '  . $tableName .' SET ';
-    }
-    /**
-     * [Adds delete clause to query]
-     * @method deleteGeneral
-     * @param  [string]        $tableName [name of the table]
-     */
-    public function deleteGeneral ($tableName) {
-        $this -> query = $this -> query . 'DELETE FROM '  . $tableName ;
-    }
-    /**
-    * [runs the query on database]
-    * @method return_query_data
-    * @param  [String]            $query [Query to be executed]
-    * @return [array]                   [results of query]
-    */
-    public function returnQueryData($query)
-    {
-        $method = Request::getInstance() -> method;
-        $controller = Request::getInstance() -> controller;
-
-        $table_data_array = array();
-        if($method == 'index' || $method == 'read' || $controller == 'login') {
-        // if($flag ==  True) {
-            try {
-                $response = Database::getInstance()-> db_conn ->  query($query);
-                while ($row = $response->fetch(\PDO::FETCH_ASSOC)) {
-                    $obj = (object)$row;
-                    $table_data_array[$obj->id] = $obj;
-                    // array_push($table_data_array, $row);
-                }
-            } catch (\PDOException $e) {
-                echo $e;
-            }
-            return $table_data_array;
-        } else {
-            Database::getInstance()-> db_conn -> query($query);
-            return null;
-        }
-    }
 }
-
 ?>

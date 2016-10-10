@@ -11,11 +11,16 @@ class Model
      * @method __construct
     */
     public $columnArray;
-    public function __construct($cName)
+    public function __construct()
     {
+
         $this->db = Database::getInstance();
-        $this ->  columnArray = array('id', 'name', 'city', 'email');
-        $dbQuery =  new DBquery($cName, $this -> columnArray);
-        $GLOBALS = $dbQuery -> dbCall();
+        // $dbQuery =  new DBquery(Request::getInstance() -> controller, $this -> columnArray);
+        // $lame =  $dbQuery -> columnNames();
+        // $this ->  columnArray = $this -> db -> returnQueryData($lame);
+        $dbQuery =  new DBquery(Request::getInstance() -> controller, $this -> columnArray);
+        $query = $dbQuery -> dbCall();
+        echo $query;
+        $GLOBALS = $this ->  db -> returnQueryData($query);
     }
 }

@@ -13,6 +13,10 @@ class ControllerFactory
 
     function __construct($controller)
     {
-        new $controller();
+        if (file_exists('../app/controllers/'. $controller. '.php')) {
+            new $controller();
+        } else {
+            echo " error";
+        }
     }
 }

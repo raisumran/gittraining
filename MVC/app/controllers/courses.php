@@ -1,9 +1,9 @@
 <?php
 /**
  * this class inherits the Controller class
- * and initiates operation for students
+ * and initiates operation for courses
  */
-class Teachers extends Controller
+class Students extends Controller
 {
     /**
      * [calls the parent class constructor]

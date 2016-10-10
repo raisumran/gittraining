@@ -10,6 +10,7 @@ class TeachersModel extends Model
      */
     function __construct()
     {
-        parent::__construct('teachers');
+        $this ->  columnArray = array('id', 'name', 'city', 'email');
+        parent::__construct();
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * Inherits Model class and manages model for students
+ * Inherits Model class and manages model for courses
  */
 
-class StudentsModel extends Model
+class CourseModel extends Model
 {
     /**
      * [calls the parents constructor for students]
