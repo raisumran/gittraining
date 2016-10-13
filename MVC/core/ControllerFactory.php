@@ -4,7 +4,7 @@
  */
 class ControllerFactory
 {
-
+    private $controller;
     /**
      * [constructs contoller]
      * @method __construct
@@ -13,10 +13,13 @@ class ControllerFactory
 
     function __construct($controller)
     {
-        if (file_exists('../app/controllers/'. $controller. '.php')) {
-            new $controller();
+        $this ->  controller =  $controller;
+    }
+    public function createController() {
+        if (file_exists('../app/controllers/'. $this -> controller. '.php')) {
+            return new $this -> controller();
         } else {
-            echo " error";
+            return new error();
         }
     }
 }

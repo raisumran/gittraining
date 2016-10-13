@@ -7,6 +7,7 @@ class DBquery
     public $query;
     private $table;
     private $columnArray = array();
+    private $relationships;
     /**
      * [allocates values to properties of class]
      * @method __construct
@@ -14,13 +15,15 @@ class DBquery
      * @param  [string]      $columnArray [colums list of the concerend table]
      */
 
-    function __construct($table, $columnArray)
+    function __construct($table, $columnArray, $relationships)
     {
         $this -> query = new Query();
         $this ->  table = $table;
         for($i = 0; $i < count($columnArray); $i++) {
             $this -> columnArray[$i] = $columnArray[$i];
         }
+        $this ->  relationships = $relationships;
+        $_GLOBALS[0] = $columnArray;
     }
     /**
      * [constructs and executes a query ]
@@ -83,18 +86,18 @@ class DBquery
         $this -> query  -> select( $columnArray) -> where(array('id'), array($arr[0]), array(' = '));
         return $this ->  dbPrepare('read');
     }
-    // /**
-    //  * [this performs inner or outer join]
-    //  * @method join
-    //  * @return [type] [description]
-    //  */
-    //
-    // public function join() {
-    //     $this -> query  -> select($fields);
-    //     $this -> query -> join($type, $this ->  table );
-    //     $this ->query -> where($arr, $arr1, $arr2);
-    //     return($this ->  query -> select . $this -> query -> from .  $this -> query -> join .' ON ' . $this -> query -> cond);
-    // }
+    /**
+     * [this performs inner or outer join]
+     * @method join
+     * @return [type] [description]
+     */
+
+    public function join() {
+        $_GLOBALS[0] = $this -> relationships["teacherscourses"]["select"];
+        $this -> query  -> select($this -> relationships["teacherscourses"]["select"]);
+        $this -> query -> join($this -> relationships["teacherscourses"]);
+        return $this -> dbPrepare('join');
+    }
     function dbPrepare($method) {
         $query = " ";
         if($method ==  'index') {
@@ -120,7 +123,14 @@ class DBquery
         } else if($method == 'Read') {
             $query = $query . $this ->  selectHelp();
             $query = $query . $this ->  whereHelp();
+        } else if($method == 'join') {
+            $query = $query .  $this -> selectHelp();
+            $query = $query . $this ->  query -> join[2];
+            $query = $query . ' JOIN ' . $this ->  query -> join[1];
+            $query = $query . ' ON ' .$this ->  query -> join[3][0];
+            $query = $query . ' = ' . $this ->  query -> join[3][1];
         }
+        $query = str_replace("'","",$query);
         return $query;
     }
     /**

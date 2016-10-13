@@ -48,19 +48,16 @@ class Database
     */
     public function returnQueryData($query)
     {
-        echo " <br>" . $query . "sam";
+        $resultArray = array();
         $query = $this -> db_conn ->prepare($query);
         $query->execute();
-        $array = array();
         if($query->rowCount() > 0) {
-            echo "sumran <br> ";
-        } else {
-            echo 'waao';
+            while($result = $query->fetch(PDO::FETCH_ASSOC)) {
+                array_push($resultArray, $result);
+            }
+            return $resultArray;
+        }else {
+            return null;
         }
-        while($result = $query->fetch(PDO::FETCH_ASSOC)) {
-            $obj = (object)$result;
-            $array[$obj->id] = $obj;
-        }
-        return $array;
     }
 }

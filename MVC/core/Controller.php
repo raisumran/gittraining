@@ -32,7 +32,8 @@ class Controller
     public function model($model)
     {
         set_include_path(dirname(__FILE__)."/../");
-        new ModelFactory($model);
+        $mf =  new ModelFactory($model);
+        return $mf -> createModel();
     }
     /**
      * [constructs the model and calls the view manager]
@@ -40,8 +41,17 @@ class Controller
      */
     public function action() {
         $user = $this -> model($this -> model);
-        $vM = new ViewManager($this -> controller . '/'. Request::getInstance() -> method);
-        $vM -> render();
+        $dbQuery =  new DBquery(Request::getInstance() -> controller, $user -> columnArray, $user ->  relationships);
+        $query = $dbQuery -> dbCall($user -> relationships);
+        $lists = array();
+        $lists[0] = $user -> columnArray;
+        $lists[1] = $user ->  db -> returnQueryData($query);
+        $lists[1] = $user ->  orm($lists);
+        $this ->  view($lists, 'standard');
+    }
+    public function view($lists, $view) {
+        $vM = new ViewManager($view . '/'. Request::getInstance() -> method);
+        $vM -> render($lists);
     }
 }
 ?>

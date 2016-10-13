@@ -11,5 +11,6 @@ class App
      */
     public function controllerCall() {
             $cFactory =  new ControllerFactory(Request::getInstance() -> controller);
+            return $cFactory ->  createController();
     }
 }
