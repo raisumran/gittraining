@@ -42,7 +42,7 @@ class Request
         $this -> method =  $method;
         $this -> params =  $params;
         if($_POST) {
-            $this -> params =  $_POST["param"];
+            $this -> params =  $_POST['param'];
         }
     }
     /**

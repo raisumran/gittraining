@@ -9,8 +9,8 @@ class ModelFactory
     {
         $this ->  model = $model;
     }
-    public function createModel() {
-        return new $this -> model();
+    public function createModel($params, $tableName) {
+        return new $this -> model($params, $tableName);
     }
 }
 

@@ -11,9 +11,9 @@
         public $update;
         public $join;
 
-        function __construct()
+        function __construct($table)
         {
-            $this -> table = Request::getInstance() -> controller;
+            $this -> table = $table;
             $this ->  fields = array();
             $this  -> where = array();
             $this  -> update = array();

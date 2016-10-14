@@ -6,7 +6,10 @@
 class Controller
 {
     protected $controller;
-    protected $model;
+    protected $modelName;
+    protected $method;
+    protected $params;
+    private $model;
     /**
      * [sets the properties of controller class and
      * calls the action function]
@@ -14,13 +17,11 @@ class Controller
      * @param  [type]      $model [description]
      */
     public function __construct() {
-        // echo "called";
-        // foreach (array_keys($_POST) as $field)
-        // {
-        //     echo $_POST[$field];
-        // }
+
         $this -> controller = Request::getInstance() -> controller;
-        $this ->  model = get_class($this). 'Model';
+        $this ->  modelName = get_class($this). 'Model';
+        $this -> method = Request::getInstance() ->method;
+        $this -> params = Request::getInstance() ->params;
         Self::action();
     }
     /**
@@ -32,23 +33,69 @@ class Controller
     public function model($model)
     {
         set_include_path(dirname(__FILE__)."/../");
-        $mf =  new ModelFactory($model);
-        return $mf -> createModel();
+        $mf =  new ModelFactory($model, $this -> params, $this -> controller);
+        return $mf -> createModel($this ->  params, Request::getInstance() -> controller);
     }
     /**
      * [constructs the model and calls the view manager]
      * @method action
      */
     public function action() {
-        $user = $this -> model($this -> model);
-        $dbQuery =  new DBquery(Request::getInstance() -> controller, $user -> columnArray, $user ->  relationships);
-        $query = $dbQuery -> dbCall($user -> relationships);
-        $lists = array();
-        $lists[0] = $user -> columnArray;
-        $lists[1] = $user ->  db -> returnQueryData($query);
-        $lists[1] = $user ->  orm($lists);
+        $this -> model = $this -> model($this -> modelName);
+        $method = $this -> method;
+        $lists = Self::$method();
         $this ->  view($lists, 'standard');
+
     }
+    /**
+     * [Inititates index action]
+     * @method index
+     * @param  [Model] $user [Model to access]
+     * @return [type]       [description]
+     */
+
+    public function index() {
+        return $this -> model ->  dbCall('index');
+    }
+    /**
+     * [Inititates create action]
+     * @method create
+     * @param  [Model] $user [Model to access]
+     */
+    public function create() {
+        return $this -> model ->  dbCall('create');
+    }
+    /**
+     * [Inititates update action]
+     * @method update
+     * @param  [Model] $user [Model to access]
+     */
+    public function update() {
+        return $this -> model ->  dbCall('update');
+    }
+    /**
+     * [Inititates delete action]
+     * @method delete
+     * @param  [Model] $user [Model to access]
+     */
+    public function delete() {
+        return $this -> model ->  dbCall('delete');
+    }
+    /**
+     * [Inititates read action]
+     * @method read
+     * @param  [Model] $user [Model to access]
+     */
+    public function read() {
+        return $this -> model ->  dbCall('read');
+    }
+    /**
+     * [calls the view for the controller and method]
+     * @method view
+     * @param  [array] $lists [output to display ]
+     * @param  [string ] $view  [viewfile to call]
+     */
+
     public function view($lists, $view) {
         $vM = new ViewManager($view . '/'. Request::getInstance() -> method);
         $vM -> render($lists);

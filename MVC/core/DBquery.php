@@ -8,6 +8,7 @@ class DBquery
     private $table;
     private $columnArray = array();
     private $relationships;
+    private $params;
     /**
      * [allocates values to properties of class]
      * @method __construct
@@ -15,25 +16,16 @@ class DBquery
      * @param  [string]      $columnArray [colums list of the concerend table]
      */
 
-    function __construct($table, $columnArray, $relationships)
+    function __construct($table, $columnArray, $relationships, $params)
     {
-        $this -> query = new Query();
+        $this -> query = new Query($table);
         $this ->  table = $table;
+        $this ->  columnArray =  $columnArray;
         for($i = 0; $i < count($columnArray); $i++) {
             $this -> columnArray[$i] = $columnArray[$i];
         }
         $this ->  relationships = $relationships;
-        $_GLOBALS[0] = $columnArray;
-    }
-    /**
-     * [constructs and executes a query ]
-     * @method dbCall
-     * @return [Array] [result of query execution]
-     */
-    public function dbCall() {
-        $array = Request::getInstance() -> params;
-        $method = Request::getInstance() -> method;
-        return $this -> $method($array, $this -> columnArray);
+        $this ->  params = $params;
     }
     /**
      * [constructs a query for view ALL]
@@ -50,9 +42,9 @@ class DBquery
      * @param  [array] $arr         [input arguments]
      * @param  [array] $columnArray [colums of concerned table]
      */
-    function create($arr, $columnArray)
+    function create()
     {
-        $this -> query -> insert($arr);
+        $this -> query -> insert($this -> params);
         return $this ->  dbPrepare('create');
     }
     /**
@@ -62,8 +54,8 @@ class DBquery
      * @param  [array]  [colums of concerned table]
      */
 
-    function delete($arr, $columnArray) {
-        $this -> query -> where(array('id'), array($arr[0]), array(' = '));
+    function delete() {
+        $this -> query -> where(array('id'), array($this -> params[0]), array(' = '));
         return $this ->  dbPrepare('delete');
     }
     /**
@@ -72,8 +64,8 @@ class DBquery
      * @param  [array] $arr         [input arguments]
      * @param  [array]  [colums of concerned table]
      */
-    function update($arr, $columnArray) {
-        $this -> query ->  update($columnArray, $arr) -> where(array('id'), array($arr[0]), array(' = '));
+    function update() {
+        $this -> query ->  update($this -> columnArray, $params) -> where(array('id'), array($arr[0]), array(' = '));
         return $this -> dbPrepare('update');
     }
     /**
@@ -82,8 +74,8 @@ class DBquery
      * @param  [array] $arr         [input arguments]
      * @param  [array]  [colums of concerned table]
      */
-    function read($arr, $columnArray) {
-        $this -> query  -> select( $columnArray) -> where(array('id'), array($arr[0]), array(' = '));
+    function read() {
+        $this -> query  -> select( $this -> columnArray) -> where(array('id'), array($params[0]), array(' = '));
         return $this ->  dbPrepare('read');
     }
     /**

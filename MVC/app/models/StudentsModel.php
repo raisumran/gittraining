@@ -5,16 +5,9 @@
 
 class StudentsModel extends Model
 {
-    /**
-     * [calls the parents constructor for students]
-     * @method __construct
-     */
+    public $columnArray = array('id', 'name', 'city', 'email');
 
-    function __construct()
-    {
-        $this ->  columnArray = array('id', 'name', 'city', 'email');
-        parent::__construct();
-    }
+
 }
 
 ?>

@@ -18,7 +18,7 @@
     <!-- Create Method Impelementation -->
 
     <h1> Create </h1>
-    <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
+    <form method = "POST" action  = "<?php print $link; ?>" mehtod = "POST">
     <?php
         for($i = 0; $i < count($lists[0]); $i++){
             if($lists[0][$i] != 'id') {
@@ -47,14 +47,14 @@
     <label></label><input type = "submit" value =  "update"/>
     </form>
 
-    <?php $link = LINKPATH . 'teachers/delete'; ?>
+    <?php $link = LINKPATH . Request::getInstance() -> controller.'/delete'; ?>
     <h1> Delete </h1>
     <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
     <label>ID</label><input type ="text" name = "param[]"/><br />
     <label></label><input type = "submit" value =  "Delete"/>
     </form>
 
-    <?php $link = LINKPATH . 'teachers/read'; ?>
+    <?php $link = LINKPATH . Request::getInstance() -> controller.'/read'; ?>
     <h1> Read </h1>
     <form method = "POST" action  = "<?php print $link; ?>" mehtod = "post">
     <label>ID</label><input type ="text" name = "param[]"/><br />
