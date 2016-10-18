@@ -5,6 +5,7 @@
 class TeachersModel extends Model
 {
     public $columnArray = array('id', 'name', 'city', 'email');
+    public $tableName = 'teachers';
     public $relationships = array("teacherscourses" => array(
         "select" => array("teachers.name", "courses.name"),
         "type" => " one to many ",

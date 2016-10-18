@@ -6,6 +6,9 @@
 class StudentsModel extends Model
 {
     public $columnArray = array('id', 'name', 'city', 'email');
+    public $tableName = 'students';
+    public $relationships = [];
+    
 
 
 }

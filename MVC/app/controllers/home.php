@@ -9,6 +9,8 @@ class Home extends Controller
      * @method __construct
      */
     function __construct() {
-        parent::view([], 'home');
+        // its a repition I believe and an attribute can be declared
+        $this ->  flag =  True;
+        parent ::__construct();
     }
 }

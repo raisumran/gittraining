@@ -6,19 +6,14 @@ class Model
 {
 
     public $db;
-    protected $params;
-    protected $tableName;
-    // public $columnArray;
-    public $relationships;
+
     /**
      * [creates a new DB object and calls database when invoked]
      * @method __construct
     */
-    public function __construct($params, $tableName)
+    public function __construct()
     {
         $this->db = Database::getInstance();
-        $this -> params = $params;
-        $this ->  tableName =  $tableName;
     }
     /**
      * [calls the function to interact with DB ]
@@ -27,8 +22,9 @@ class Model
      * @return [Array]         [output from database]
      */
 
-    public function dbCall($method) {
-        $dbQuery =  new DBquery($this ->  tableName, $this -> columnArray, $this ->  relationships, $this ->  params);
+    public function dbCall($params) {
+        $dbQuery =  new DBquery($this ->  tableName, $this -> columnArray, $this ->  relationships, $params);
+        $method =  (debug_backtrace()[1]['function']);
         $query =  $dbQuery ->  $method();
         $lists = array();
         $lists[0] = $this -> columnArray;
@@ -46,6 +42,9 @@ class Model
      */
 
     public function orm($lists){
+        // What is best place to do ORM, I have choosen this becuase
+        // this is a model side operation and in this case basemodel deals with
+        // it
         $temp = array();
         $i = 0;
         foreach ($lists[1] as $value) {

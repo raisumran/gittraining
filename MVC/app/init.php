@@ -20,7 +20,7 @@ spl_autoload_register(function($class_name){
         "Controller" => "../core/Controller.php",
         "ControllerFactory" => "../core/ControllerFactory.php",
         "Database" => "../core/Database.php",
-        "DBquery" => "core/DBquery.php",
+        "DBquery" => "../core/DBquery.php",
         "Query" => "../core/Query.php",
         "Model" => "../core/Model.php",
         "ModelFactory" => "../core/ModelFactory.php",

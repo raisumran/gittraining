@@ -6,10 +6,12 @@
 class Controller
 {
     protected $controller;
+    // stores a string
     protected $modelName;
-    protected $method;
-    protected $params;
+    // Stores the Child object of MODEL
     private $model;
+    protected $view;
+    protected $flag;
     /**
      * [sets the properties of controller class and
      * calls the action function]
@@ -19,10 +21,14 @@ class Controller
     public function __construct() {
 
         $this -> controller = Request::getInstance() -> controller;
-        $this ->  modelName = get_class($this). 'Model';
-        $this -> method = Request::getInstance() ->method;
-        $this -> params = Request::getInstance() ->params;
-        Self::action();
+        $this -> view = new ViewManager();
+        if($this -> flag == True) {
+            // code repition, need to put it in a function
+            $this -> view (get_class($this) . '/index');
+        } else {
+            $this ->  modelName = get_class($this). 'Model';
+            Self::action(Request::getInstance() ->method);
+        }
     }
     /**
      * [creates model object]
@@ -32,19 +38,20 @@ class Controller
      */
     public function model($model)
     {
-        set_include_path(dirname(__FILE__)."/../");
-        $mf =  new ModelFactory($model, $this -> params, $this -> controller);
-        return $mf -> createModel($this ->  params, Request::getInstance() -> controller);
+        //  whats wrong here,  I should not be calling this statically for sure
+        //
+        $mf =  new ModelFactory($model);
+        return $mf -> createModel();
     }
     /**
      * [constructs the model and calls the view manager]
      * @method action
      */
-    public function action() {
+    public function action($method) {
         $this -> model = $this -> model($this -> modelName);
-        $method = $this -> method;
-        $lists = Self::$method();
-        $this ->  view($lists, 'standard');
+        $params =  Request::getInstance() ->params;
+        Self::$method($params);
+        $this -> view('standard/index');
 
     }
     /**
@@ -54,32 +61,32 @@ class Controller
      * @return [type]       [description]
      */
 
-    public function index() {
-        return $this -> model ->  dbCall('index');
+    public function index($params) {
+        $this -> view ->  data = $this -> model ->  dbCall('index', $params);
     }
     /**
      * [Inititates create action]
      * @method create
      * @param  [Model] $user [Model to access]
      */
-    public function create() {
-        return $this -> model ->  dbCall('create');
+    public function create($params) {
+        $this -> view ->  data =  $this -> model ->  dbCall( $params);
     }
     /**
      * [Inititates update action]
      * @method update
      * @param  [Model] $user [Model to access]
      */
-    public function update() {
-        return $this -> model ->  dbCall('update');
+    public function update($params) {
+        $this -> view ->  data =  $this -> model ->  dbCall($params);
     }
     /**
      * [Inititates delete action]
      * @method delete
      * @param  [Model] $user [Model to access]
      */
-    public function delete() {
-        return $this -> model ->  dbCall('delete');
+    public function delete($params) {
+        $this -> view ->  data =  $this -> model ->  dbCall( $params);
     }
     /**
      * [Inititates read action]
@@ -87,7 +94,7 @@ class Controller
      * @param  [Model] $user [Model to access]
      */
     public function read() {
-        return $this -> model ->  dbCall('read');
+        $this -> view ->  data = $this -> model ->  dbCall( $params);
     }
     /**
      * [calls the view for the controller and method]
@@ -95,10 +102,10 @@ class Controller
      * @param  [array] $lists [output to display ]
      * @param  [string ] $view  [viewfile to call]
      */
-
-    public function view($lists, $view) {
-        $vM = new ViewManager($view . '/'. Request::getInstance() -> method);
-        $vM -> render($lists);
+     // need to fix it according to method name as well
+    public function view($fileName) {
+        $this -> view -> viewfile  = $fileName;
+        $this ->  view ->  render();
     }
 }
 ?>
