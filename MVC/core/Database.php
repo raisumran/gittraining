@@ -29,16 +29,6 @@ class Database
         $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
         $this->db_conn = new PDO("mysql:host=localhost;dbname=rolustech","root",123);
 
-        // $dsn = 'mysql:host=' . HOST . ';dbname=' . DBNAME;
-        // $options = array(
-        // PDO::ATTR_PERSISTENT => true,
-        // PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        // );
-        // $this -> db_conn = new PDO($dsn, USERNAME, PASSWORD, $options);
-        // if (! isset($this -> db_conn)) {
-        //     echo "error in database connection";
-        // } else {
-        // }
     }
     /**
     * [runs the query on database]

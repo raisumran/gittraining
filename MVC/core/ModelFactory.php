@@ -10,7 +10,12 @@ class ModelFactory
         $this ->  model = $model;
     }
     public function createModel() {
-        return new $this -> model();
+        if (file_exists('../app/models/'.$this -> model. '.php')) {
+            return new $this -> model();
+        }else {
+            // needs to send an error message as well
+            return "error";
+        }
     }
 }
 

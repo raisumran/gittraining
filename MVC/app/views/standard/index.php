@@ -4,9 +4,6 @@
 
 <body>
     <?php
-        // foreach ($lists[1] as $value) {
-        //     $i = 0;
-        //     foreach ($value as $val) {
         for($i = 0; $i < count($lists[1]); $i++){
             for($j = 0; $j < count($lists[0]); $j++){
                 echo $lists[0][$j] . " => " . $lists[1][$i][$j] . "<br>";
